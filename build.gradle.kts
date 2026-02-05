@@ -18,6 +18,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     java
     jacoco
+    id("org.openapi.generator") version "7.2.0"
 }
 
 val javaVersion = libs.versions.java.get()
@@ -29,9 +30,41 @@ java {
 }
 
 dependencies {
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.gson)
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
     testImplementation(libs.junit.aggregator)
     testRuntimeOnly(libs.junit.engine)
     testRuntimeOnly(libs.junit.platform)
+}
+
+openApiGenerate {
+    inputSpec.set("$projectDir/openapi.yaml")
+    generatorName.set("java")
+    apiPackage.set("edu.cnm.deepdive.codebreaker.service")
+    modelPackage.set("edu.cnm.deepdive.codebreaker.model")
+    invokerPackage.set("edu.cnm.deepdive.codebreaker")
+
+    configOptions.set(
+        mapOf(
+            "library" to "retrofit2",
+            "useRecords" to "true",
+            "generateBuilders" to "true",
+            "dateLibrary" to "java8",
+            "openApiNullable" to "false",
+            "generateModelTests" to "true",
+            "generateApiTests" to "true",
+        )
+    )
+
+    globalProperties.set(mapOf(
+        "models" to "",
+        "apis" to ""
+    ))
 }
 
 tasks.withType<JavaCompile> {
@@ -54,4 +87,13 @@ tasks.test {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+}
+
+sourceSets {
+    main {
+        java {
+            // This tells Gradle: "Look in both places for source code"
+            srcDirs("${project.buildDir}/generate-resources/main/src/main")
+        }
+    }
 }
