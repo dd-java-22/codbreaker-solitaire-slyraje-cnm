@@ -10,7 +10,7 @@ public class Main {
 
     Game game = new Game()
         .pool("ABCDE")
-        .length(2);
+        .length(-2);
 
     AbstractCodebreakerService service = AbstractCodebreakerService.getInstance();
     CompletableFuture<Game> future = service.startGame(game);
@@ -21,6 +21,7 @@ public class Main {
         .exceptionally((throwable) -> {
           throwable.printStackTrace();
           return null;
-    });
+        });
+    System.out.println("Game start requested!");
   }
 }
