@@ -1,7 +1,7 @@
 package edu.cnm.deepdive.codebreaker;
 
 import edu.cnm.deepdive.codebreaker.model.Game;
-import edu.cnm.deepdive.codebreaker.service.AbstractCodebreakerService;
+import edu.cnm.deepdive.codebreaker.service.CodebreakerService;
 import java.util.concurrent.CompletableFuture;
 
 public class Main {
@@ -10,9 +10,9 @@ public class Main {
 
     Game game = new Game()
         .pool("ABCDE")
-        .length(-2);
+        .length(2);
 
-    AbstractCodebreakerService service = AbstractCodebreakerService.getInstance();
+    CodebreakerService service = CodebreakerService.getInstance();
     CompletableFuture<Game> future = service.startGame(game);
     future
         .thenAccept((startedGame) -> {
