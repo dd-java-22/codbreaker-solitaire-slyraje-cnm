@@ -47,7 +47,7 @@ public class GameViewModel {
     return error;
   }
 
-    public void startGame(String pool, int length) {
+  public void startGame(String pool, int length) {
     Game game = new Game.Builder()
         .pool(pool)
         .length(length)
@@ -84,17 +84,19 @@ public class GameViewModel {
         .build();
     service
         .submitGuess(game.getId(), guess)
-        .thenAccept((guessResponse) -> {
+        .thenApply(this::setGuess)
+        .thenApply((guessResponse) -> {
           //noinspection DataFlowIssue
           game.getGuesses().add(guessResponse);
-          setGame(game);
+          return game;
         })
-    .exceptionally(this::logError);
+        .thenAccept(this::setGame)
+        .exceptionally(this::logError);
   }
 
   public void getGuess(String gameId, String guessId) {
     service
-        .getGuess(gameId, guessId)
+        .getGuess(game.getId(), guessId)
         .thenAccept(this::setGuess)
         .exceptionally(this::logError);
   }
@@ -102,9 +104,11 @@ public class GameViewModel {
   public void registerGameObserver(Consumer<Game> observer) {
     gameObservers.add(observer);
   }
+
   public void registerGuessObserver(Consumer<Guess> observer) {
     guessObservers.add(observer);
   }
+
   public void registerErrorObserver(Consumer<Throwable> observer) {
     errorObservers.add(observer);
   }
