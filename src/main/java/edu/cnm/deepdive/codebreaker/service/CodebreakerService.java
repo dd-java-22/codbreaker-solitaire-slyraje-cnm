@@ -14,10 +14,10 @@ public interface CodebreakerService {
 
   CompletableFuture<Game> getGame(String gameId);
 
+  CompletableFuture<Void> delete(String gameId);
+
+  CompletableFuture<Guess> submitGuess(Game game, Guess guess);
+
   CompletableFuture<Guess> getGuess(String gameId, String guessId);
-
-  CompletableFuture<Guess> submitGuess(String gameId, Guess guess);
-
-  CompletableFuture<Void> deleteGame(String gameId);
 
 }

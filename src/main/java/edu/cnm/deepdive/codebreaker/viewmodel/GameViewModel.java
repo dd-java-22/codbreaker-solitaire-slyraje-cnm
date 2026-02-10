@@ -36,21 +36,21 @@ public class GameViewModel {
   private Game setGame(Game game) {
     this.game = game;
     gameObservers
-        .forEach((consumer -> consumer.accept(game)));
+        .forEach((consumer) -> consumer.accept(game));
     return game;
   }
 
   private Guess setGuess(Guess guess) {
     this.guess = guess;
     guessObservers
-        .forEach((consumer -> consumer.accept(guess)));
+        .forEach((consumer) -> consumer.accept(guess));
     return guess;
   }
 
   private Throwable setError(Throwable error) {
     this.error = error;
     errorObservers
-        .forEach((consumer -> consumer.accept(error)));
+        .forEach((consumer) -> consumer.accept(error));
     return error;
   }
 
@@ -83,13 +83,13 @@ public class GameViewModel {
 
   public void deleteGame(String gameId) {
     service
-        .deleteGame(gameId)
+        .delete(gameId)
         .exceptionally(this::logError);
   }
 
   public void deleteGame() {
     service
-        .deleteGame(game.getId())
+        .delete(game.getId())
         .thenRun(() -> setGame(null))
         .exceptionally(this::logError);
   }
@@ -99,7 +99,7 @@ public class GameViewModel {
         .text(text)
         .build();
     service
-        .submitGuess(game.getId(), guess)
+        .submitGuess(game, guess)
         .thenApply(this::setGuess)
         .thenApply((receivedGuess) -> {
           setSolved(receivedGuess.getSolution());
@@ -114,12 +114,14 @@ public class GameViewModel {
         .exceptionally(this::logError);
   }
 
-  public void getGuess(String gameId, String guessId) {
+  public void getGuess(String guessId) {
     service
         .getGuess(game.getId(), guessId)
         .thenAccept(this::setGuess)
         .exceptionally(this::logError);
   }
+
+// TODO: 2026-02-10 Add methods to get and delete game, submit and get guess.
 
   public void registerGameObserver(Consumer<Game> observer) {
     gameObservers.add(observer);
@@ -147,5 +149,7 @@ public class GameViewModel {
   private static class Holder {
 
     static final GameViewModel INSTANCE = new GameViewModel();
+
   }
+
 }
