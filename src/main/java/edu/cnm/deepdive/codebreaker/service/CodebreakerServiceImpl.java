@@ -63,25 +63,14 @@ class CodebreakerServiceImpl implements CodebreakerService {
 
   @Override
   public CompletableFuture<Game> getGame(String gameId) {
-    CompletableFuture<Game> future = new CompletableFuture<>();
-    api
-        .getGame(gameId)
-        .enqueue(new Callback<>() {
-          @Override
-          public void onResponse(Call<Game> call, Response<Game> response) {
-            if (response.isSuccessful()) {
-              future.complete(response.body());
-            } else {
-              future.completeExceptionally(
-                  new IllegalArgumentException("Specified game doesn't exist!"));
-            }
-          }
+    return buildGetGameFuture(gameId);
+  }
 
-          @Override
-          public void onFailure(Call<Game> call, Throwable t) {
-            future.completeExceptionally(t);
-          }
-        });
+  @NotNull
+  private CompletableFuture<Game> buildGetGameFuture(String gameId) {
+    CompletableFuture<Game> future = new CompletableFuture<>();
+    api.getGame(gameId)
+        .enqueue(new GetGameCallback(future));
     return future;
   }
 
@@ -232,6 +221,8 @@ class CodebreakerServiceImpl implements CodebreakerService {
       this.future = future;
     }
 
+
+
     @Override
     public void onResponse(Call<Game> call, Response<Game> response) {
       if (response.isSuccessful()) {
@@ -245,6 +236,30 @@ class CodebreakerServiceImpl implements CodebreakerService {
     @Override
     public void onFailure(Call<Game> call, Throwable throwable) {
       future.completeExceptionally(throwable);
+    }
+  }
+
+  private static class GetGameCallback implements Callback<Game> {
+
+    private final CompletableFuture<Game> future;
+
+    public GetGameCallback(CompletableFuture<Game> future) {
+      this.future = future;
+    }
+
+    @Override
+    public void onResponse(Call<Game> call, Response<Game> response) {
+      if (response.isSuccessful()) {
+        future.complete(response.body());
+      } else {
+        future.completeExceptionally(
+            new IllegalArgumentException("Specified game doesn't exist!"));
+      }
+    }
+
+    @Override
+    public void onFailure(Call<Game> call, Throwable t) {
+      future.completeExceptionally(t);
     }
   }
 }
