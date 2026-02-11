@@ -110,28 +110,14 @@ class CodebreakerServiceImpl implements CodebreakerService {
 
   @Override
   public CompletableFuture<Guess> getGuess(String gameId, String guessId) {
+    return buildGetGuessFuture(gameId, guessId);
+  }
+
+  @NotNull
+  private CompletableFuture<Guess> buildGetGuessFuture(String gameId, String guessId) {
     CompletableFuture<Guess> future = new CompletableFuture<>();
     api.getGuess(gameId, guessId)
-        .enqueue(new Callback<Guess>() {
-          @Override
-          public void onResponse(Call<Guess> call, Response<Guess> response) {
-            if (response.isSuccessful()) {
-              future.complete(response.body());
-            } else {
-              switch (response.code()) {
-                case 404 -> future.completeExceptionally(
-                    new IllegalArgumentException("Game or guess not found!"));
-                default -> future.completeExceptionally(
-                    new IllegalArgumentException("Unknown error!"));
-              }
-            }
-          }
-
-          @Override
-          public void onFailure(Call<Guess> call, Throwable t) {
-
-          }
-        });
+        .enqueue(new GetGuessCallback(future));
     return future;
   }
 
@@ -288,6 +274,34 @@ class CodebreakerServiceImpl implements CodebreakerService {
     @Override
     public void onFailure(Call<Guess> call, Throwable t) {
       future.completeExceptionally(t);
+    }
+  }
+
+  private static class GetGuessCallback implements Callback<Guess> {
+
+    private final CompletableFuture<Guess> future;
+
+    public GetGuessCallback(CompletableFuture<Guess> future) {
+      this.future = future;
+    }
+
+    @Override
+    public void onResponse(Call<Guess> call, Response<Guess> response) {
+      if (response.isSuccessful()) {
+        future.complete(response.body());
+      } else {
+        switch (response.code()) {
+          case 404 -> future.completeExceptionally(
+              new IllegalArgumentException("Game or guess not found!"));
+          default -> future.completeExceptionally(
+              new IllegalArgumentException("Unknown error!"));
+        }
+      }
+    }
+
+    @Override
+    public void onFailure(Call<Guess> call, Throwable t) {
+
     }
   }
 }
