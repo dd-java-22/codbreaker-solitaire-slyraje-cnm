@@ -76,25 +76,15 @@ class CodebreakerServiceImpl implements CodebreakerService {
 
   @Override
   public CompletableFuture<Void> delete(String gameId) {
+    return buildDeleteGameFuture(gameId);
+  }
+
+  @NotNull
+  private CompletableFuture<Void> buildDeleteGameFuture(String gameId) {
     CompletableFuture<Void> future = new CompletableFuture<>();
     api
         .deleteGame(gameId)
-        .enqueue(new Callback<>() {
-          @Override
-          public void onResponse(Call<Void> call, Response<Void> response) {
-            if (response.isSuccessful()) {
-              future.complete(null);
-            } else {
-              future.completeExceptionally(
-                  new IllegalArgumentException("Specified game doesn't exist!"));
-            }
-          }
-
-          @Override
-          public void onFailure(Call<Void> call, Throwable t) {
-            future.completeExceptionally(t);
-          }
-        });
+        .enqueue(new DeleteGameCallback(future));
     return future;
   }
 
@@ -221,8 +211,6 @@ class CodebreakerServiceImpl implements CodebreakerService {
       this.future = future;
     }
 
-
-
     @Override
     public void onResponse(Call<Game> call, Response<Game> response) {
       if (response.isSuccessful()) {
@@ -259,6 +247,30 @@ class CodebreakerServiceImpl implements CodebreakerService {
 
     @Override
     public void onFailure(Call<Game> call, Throwable t) {
+      future.completeExceptionally(t);
+    }
+  }
+
+  private static class DeleteGameCallback implements Callback<Void> {
+
+    private final CompletableFuture<Void> future;
+
+    public DeleteGameCallback(CompletableFuture<Void> future) {
+      this.future = future;
+    }
+
+    @Override
+    public void onResponse(Call<Void> call, Response<Void> response) {
+      if (response.isSuccessful()) {
+        future.complete(null);
+      } else {
+        future.completeExceptionally(
+            new IllegalArgumentException("Specified game doesn't exist!"));
+      }
+    }
+
+    @Override
+    public void onFailure(Call<Void> call, Throwable t) {
       future.completeExceptionally(t);
     }
   }
