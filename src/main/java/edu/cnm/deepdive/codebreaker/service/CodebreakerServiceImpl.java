@@ -90,32 +90,18 @@ class CodebreakerServiceImpl implements CodebreakerService {
 
   @Override
   public CompletableFuture<Guess> submitGuess(Game game, Guess guess) {
+    CompletableFuture<Guess> future = buildSubmitGuessFuture(
+        game, guess);
+    return future;
+  }
+
+  @NotNull
+  private CompletableFuture<Guess> buildSubmitGuessFuture(Game game, Guess guess) {
     CompletableFuture<Guess> future;
     if (guess.getText().length() == game.getLength()) {
       future = new CompletableFuture<>();
       api.submitGuess(game.getId(), guess)
-          .enqueue(new Callback<Guess>() {
-            @Override
-            public void onResponse(Call<Guess> call, Response<Guess> response) {
-              if (response.isSuccessful()) {
-                future.complete(response.body());
-              } else {
-                switch (response.code()) {
-                  case 400 -> future.completeExceptionally(
-                      new IllegalArgumentException("Invalid guess content!"));
-                  case 404 -> future.completeExceptionally(
-                      new IllegalArgumentException("Game not found!"));
-                  default -> future.completeExceptionally(
-                      new IllegalArgumentException("Unknown error!"));
-                }
-              }
-            }
-
-            @Override
-            public void onFailure(Call<Guess> call, Throwable t) {
-              future.completeExceptionally(t);
-            }
-          });
+          .enqueue(new SubmitGuessCallback(future));
     } else {
       future = CompletableFuture.failedFuture(new IllegalArgumentException());
     }
@@ -271,6 +257,36 @@ class CodebreakerServiceImpl implements CodebreakerService {
 
     @Override
     public void onFailure(Call<Void> call, Throwable t) {
+      future.completeExceptionally(t);
+    }
+  }
+
+  private static class SubmitGuessCallback implements Callback<Guess> {
+
+    private final CompletableFuture<Guess> future;
+
+    public SubmitGuessCallback(CompletableFuture<Guess> future) {
+      this.future = future;
+    }
+
+    @Override
+    public void onResponse(Call<Guess> call, Response<Guess> response) {
+      if (response.isSuccessful()) {
+        future.complete(response.body());
+      } else {
+        switch (response.code()) {
+          case 400 -> future.completeExceptionally(
+              new IllegalArgumentException("Invalid guess content!"));
+          case 404 -> future.completeExceptionally(
+              new IllegalArgumentException("Game not found!"));
+          default -> future.completeExceptionally(
+              new IllegalArgumentException("Unknown error!"));
+        }
+      }
+    }
+
+    @Override
+    public void onFailure(Call<Guess> call, Throwable t) {
       future.completeExceptionally(t);
     }
   }
