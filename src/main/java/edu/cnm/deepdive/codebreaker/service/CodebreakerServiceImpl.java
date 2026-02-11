@@ -49,21 +49,37 @@ class CodebreakerServiceImpl implements CodebreakerService {
         : CompletableFuture.failedFuture(new IllegalArgumentException());
   }
 
-  @NotNull
-  private CompletableFuture<Game> buildStartGameFuture(Game game) {
-    CompletableFuture<Game> future = new CompletableFuture<>();
-    api.startGame(game)
-        .enqueue(new StartGameCallback(future));
-    return future;
+  @Override
+  public CompletableFuture<Game> getGame(String gameId) {
+    return buildGetGameFuture(gameId);
+  }
+
+  @Override
+  public CompletableFuture<Void> delete(String gameId) {
+    return buildDeleteGameFuture(gameId);
+  }
+
+  @Override
+  public CompletableFuture<Guess> submitGuess(Game game, Guess guess) {
+    return buildSubmitGuessFuture(
+        game, guess);
+  }
+
+  @Override
+  public CompletableFuture<Guess> getGuess(String gameId, String guessId) {
+    return buildGetGuessFuture(gameId, guessId);
   }
 
   private static boolean isValidGame(Game game) {
     return game.getLength() > 0 && game.getLength() < 20;
   }
 
-  @Override
-  public CompletableFuture<Game> getGame(String gameId) {
-    return buildGetGameFuture(gameId);
+  @NotNull
+  private CompletableFuture<Game> buildStartGameFuture(Game game) {
+    CompletableFuture<Game> future = new CompletableFuture<>();
+    api.startGame(game)
+        .enqueue(new StartGameCallback(future));
+    return future;
   }
 
   @NotNull
@@ -74,10 +90,6 @@ class CodebreakerServiceImpl implements CodebreakerService {
     return future;
   }
 
-  @Override
-  public CompletableFuture<Void> delete(String gameId) {
-    return buildDeleteGameFuture(gameId);
-  }
 
   @NotNull
   private CompletableFuture<Void> buildDeleteGameFuture(String gameId) {
@@ -88,12 +100,6 @@ class CodebreakerServiceImpl implements CodebreakerService {
     return future;
   }
 
-  @Override
-  public CompletableFuture<Guess> submitGuess(Game game, Guess guess) {
-    CompletableFuture<Guess> future = buildSubmitGuessFuture(
-        game, guess);
-    return future;
-  }
 
   @NotNull
   private CompletableFuture<Guess> buildSubmitGuessFuture(Game game, Guess guess) {
@@ -108,10 +114,6 @@ class CodebreakerServiceImpl implements CodebreakerService {
     return future;
   }
 
-  @Override
-  public CompletableFuture<Guess> getGuess(String gameId, String guessId) {
-    return buildGetGuessFuture(gameId, guessId);
-  }
 
   @NotNull
   private CompletableFuture<Guess> buildGetGuessFuture(String gameId, String guessId) {
