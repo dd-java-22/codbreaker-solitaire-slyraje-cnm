@@ -6,7 +6,11 @@ import edu.cnm.deepdive.codebreaker.service.CodebreakerService;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import javafx.application.Platform;
 
+/**
+ *
+ */
 @SuppressWarnings({"UnusedReturnValue", "CallToPrintStackTrace", "unused"})
 public class GameViewModel {
 
@@ -29,6 +33,13 @@ public class GameViewModel {
     solvedObservers = new LinkedList<>();
   }
 
+  /**
+   * Returns a reference to an instance of the class. This class follows the singleton design
+   * pattern; that is, repeated or concurent calls to this method will all return the same
+   * reference.
+   *
+   * @return
+   */
   public static GameViewModel getInstance() {
     return Holder.INSTANCE;
   }
@@ -124,29 +135,29 @@ public class GameViewModel {
 
   private Game setGame(Game game) {
     this.game = game;
-    gameObservers
-        .forEach((consumer) -> consumer.accept(game));
+    Platform.runLater(() -> gameObservers
+        .forEach((consumer) -> consumer.accept(game)));
     return game;
   }
 
   private Guess setGuess(Guess guess) {
     this.guess = guess;
-    guessObservers
-        .forEach((consumer) -> consumer.accept(guess));
+    Platform.runLater(() -> guessObservers
+        .forEach((consumer) -> consumer.accept(guess)));
     return guess;
   }
 
   private Boolean setSolved(Boolean solved) {
     this.solved = solved;
-    solvedObservers
-        .forEach((consumer) -> consumer.accept(solved));
+    Platform.runLater(() -> solvedObservers
+        .forEach((consumer) -> consumer.accept(solved)));
     return solved;
   }
 
   private Throwable setError(Throwable error) {
     this.error = error;
-    errorObservers
-        .forEach((consumer) -> consumer.accept(error));
+    Platform.runLater(() -> errorObservers
+        .forEach((consumer) -> consumer.accept(error)));
     return error;
   }
 
