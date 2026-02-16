@@ -13,12 +13,14 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
@@ -28,7 +30,6 @@ import javafx.scene.text.TextFlow;
 
 public class MainController {
 
-  private static final String PROPERTIES_FILE = "game.properties";
   private static final String POOL_KEY = "pool";
   private static final String LENGTH_KEY = "length";
   private static final Pattern PROPERTY_LIST_DELIMITER = Pattern.compile("\\s*,\\s*");
@@ -42,9 +43,11 @@ public class MainController {
   @FXML
   private Text gameState;
   @FXML
-  private TilePane guessPalette;
+  private TilePane guessContainer;
   @FXML
   private Button send;
+  @FXML
+  private TilePane guessPalette;
 
   private GameViewModel viewModel;
   private Game game;
@@ -107,6 +110,8 @@ public class MainController {
   private void handleGame(Game game) {
     this.game = game;
     gameState.setText(game.toString());
+    EventHandler<ActionEvent> handler = (event) ->
+        System.out.println(((Node)event.getSource()).getUserData());
     ObservableList<Node> children = guessPalette.getChildren();
     children.clear();
     URL layoutUrl = getClass()
@@ -117,11 +122,13 @@ public class MainController {
         .stream()
         .map((entry) -> {
           try {
-            String name = codePointNames.get(entry.getKey());
-            Labeled node = new FXMLLoader(layoutUrl, resources)
-                .load();
+            Integer key = entry.getKey();
+            String name = codePointNames.get(key);
+            Labeled node = new FXMLLoader(layoutUrl, resources).load();
+            node.addEventHandler(ActionEvent.ACTION, handler);
             node.setTooltip(new Tooltip(name));
-            node.setText(new String(name.codePoints().limit(1).toArray(), 0, 1));
+            node.setText(buildSingleCharacterMnemonicLabel(name));
+            node.setUserData(key);
             node.getStyleClass().add(entry.getValue());
             return node;
           } catch (IOException e) {
@@ -131,14 +138,20 @@ public class MainController {
         .forEach(children::add);
   }
 
+  private String buildSingleCharacterMnemonicLabel(String name) {
+    return IntStream.concat(
+            IntStream.of('_'),
+            name.codePoints().limit(1)
+        )
+        .boxed()
+        .reduce(new StringBuilder(), StringBuilder::appendCodePoint, StringBuilder::append)
+        .toString();
+  }
+
   private void startGame() throws IOException {
-    try (InputStream input = getClass().getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
-      Properties properties = new Properties();
-      properties.load(input);
-      String pool = properties.getProperty(POOL_KEY);
-      int length = Integer.parseInt(properties.getProperty(LENGTH_KEY));
-      viewModel.startGame(pool, length);
-    }
+    String pool = resources.getString(POOL_KEY);
+    int length = Integer.parseInt(resources.getString(LENGTH_KEY));
+    viewModel.startGame(pool, length);
   }
 
 }
