@@ -2,12 +2,14 @@
   -fx-background-color: #2b2b2b;
   -fx-padding: 5px;
 }
+
 GridPane {
   -fx-pref-width: 300px;
   -fx-pref-height: 600px;
   -fx-min-width: 300px;
   -fx-min-height: 600px;
 }
+
 #scrollPane {
   -fx-background-color: #1e1e1e;
   -fx-background-insets: 0;
@@ -19,6 +21,7 @@ GridPane {
 #textFlow {
   -fx-padding: 10px;
 }
+
 #gameState {
   -fx-fill: #404060;
   -fx-font-family: "Segoe UI", sans-serif;
@@ -51,7 +54,38 @@ GridPane {
 Button.palette-button {
   -fx-background-color: transparent;
   -fx-border-color: transparent;
-  -fx-border-width: 0;
-  -fx-background-insets: 0;
   -fx-padding: 0;
+}
+
+Button.palette-button > Circle {
+  -fx-stroke-width: 0;
+  -fx-stroke: transparent;
+}
+
+Button.palette-button.red-fill > Circle {
+  -fx-fill: red;
+}
+
+Button.palette-button.orange-fill > Circle {
+  -fx-fill: orange;
+}
+
+Button.palette-button.yellow-fill > Circle {
+  -fx-fill: yellow;
+}
+
+Button.palette-button.green-fill > Circle {
+  -fx-fill: green;
+}
+
+Button.palette-button.blue-fill > Circle {
+  -fx-fill: blue;
+}
+
+Button.palette-button.indigo-fill > Circle {
+  -fx-fill: indigo;
+}
+
+Button.palette-button.violet-fill > Circle {
+  -fx-fill: violet;
 }
