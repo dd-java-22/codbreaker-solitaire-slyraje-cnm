@@ -13,8 +13,4 @@
     fx:id="paletteButtonCircle"
     radius="15"/>
 
-  <Text/>
-
-
-
 </Button>
