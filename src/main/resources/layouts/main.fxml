@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
-
 <GridPane
   xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
@@ -26,6 +25,7 @@
   <rowConstraints>
     <RowConstraints vgrow="ALWAYS" minHeight="10"/>
     <RowConstraints vgrow="NEVER" minHeight="50"/>
+    <RowConstraints vgrow="NEVER" minHeight="32"/>
   </rowConstraints>
 
   <!--suppress JavaFxRedundantPropertyValue -->
@@ -37,7 +37,8 @@
     GridPane.rowIndex="0"
     GridPane.columnSpan="2">
 
-    <TextFlow fx:id="textFlow">
+    <TextFlow
+      fx:id="textFlow">
       <Text fx:id="gameState"/>
     </TextFlow>
 
@@ -46,7 +47,7 @@
   <TilePane
     fx:id="guessPalette"
     GridPane.columnIndex="0"
-    GridPane.rowIndex="1"/>
+    GridPane.rowIndex="2"/>
 
   <Button
     fx:id="send"
@@ -59,15 +60,20 @@
     </tooltip>
 
     <graphic>
+
       <ImageView
         fitHeight="24"
         fitWidth="24"
         pickOnBounds="true">
 
-        <Image url="@../images/send.png"/>
+        <Image
+          url="@../images/send.png"/>
 
       </ImageView>
+
     </graphic>
+
   </Button>
+
 
 </GridPane>

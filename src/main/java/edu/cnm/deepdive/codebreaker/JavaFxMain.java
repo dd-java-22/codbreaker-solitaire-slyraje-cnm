@@ -1,6 +1,5 @@
 package edu.cnm.deepdive.codebreaker;
 
-import edu.cnm.deepdive.codebreaker.service.ResourceNotFoundException;
 import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,10 +17,11 @@ public class JavaFxMain extends Application {
     ResourceBundle bundle = ResourceBundle.getBundle("strings");
     ClassLoader classLoader = getClass().getClassLoader();
     stage.setTitle(bundle.getString("window_title"));
-    FXMLLoader fxmlLoader = new FXMLLoader(classLoader.getResource("layouts/main.fxml"), bundle);
+    FXMLLoader fxmlLoader =
+        new FXMLLoader(classLoader.getResource("layouts/main.fxml"), bundle);
     Scene scene = new Scene(fxmlLoader.load());
     stage.setScene(scene);
     stage.show();
-
   }
+
 }
