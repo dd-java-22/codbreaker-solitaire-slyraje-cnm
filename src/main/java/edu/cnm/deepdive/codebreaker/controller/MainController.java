@@ -33,6 +33,10 @@ public class MainController {
   private static final String POOL_KEY = "pool";
   private static final String LENGTH_KEY = "length";
   private static final Pattern PROPERTY_LIST_DELIMITER = Pattern.compile("\\s*,\\s*");
+  private static final String POOL_NAMES_KEY = "pool_names";
+  private static final String POOL_CLASSES_KEY = "pool_classes";
+  private static final String PALETTE_ITEM_LAYOUT = "palette_item_layout";
+  private static final char MNEMONIC_PREFIX = '_';
 
   @FXML
   private ResourceBundle resources;
@@ -67,8 +71,8 @@ public class MainController {
         .codePoints()
         .boxed()
         .toList();
-    List<String> poolNames = buildPoolMap("pool_names");
-    List<String> poolClasses = buildPoolMap("pool_classes");
+    List<String> poolNames = buildPoolMap(POOL_NAMES_KEY);
+    List<String> poolClasses = buildPoolMap(POOL_CLASSES_KEY);
 
     codePointNames = new LinkedHashMap<>();
     codePointClasses = new LinkedHashMap<>();
@@ -116,7 +120,7 @@ public class MainController {
     children.clear();
     URL layoutUrl = getClass()
         .getClassLoader()
-        .getResource(resources.getString("palette_item_layout"));
+        .getResource(resources.getString(PALETTE_ITEM_LAYOUT));
     codePointClasses
         .entrySet()
         .stream()
@@ -140,7 +144,7 @@ public class MainController {
 
   private String buildSingleCharacterMnemonicLabel(String name) {
     return IntStream.concat(
-            IntStream.of('_'),
+            IntStream.of(MNEMONIC_PREFIX),
             name.codePoints().limit(1)
         )
         .boxed()
