@@ -1,0 +1,12 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="100"
+  height="100">
+<path
+stroke="white"
+fill="blue"
+  fill-rule="evenodd"
+d="M 0,100 l 100,0 l 0,-100 l -100,0
+  z
+  M 0,93.30125 h 100 l -50,-86.6025 z"/>
+  </svg>
