@@ -29,7 +29,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import org.jetbrains.annotations.NotNull;
+
 
 public class MainController {
 
@@ -181,7 +181,6 @@ public class MainController {
         .forEach(children::add);
   }
 
-  @NotNull
   private Labeled buildPaletteItem(Entry<Integer, String> entry) {
     try {
       Integer key = entry.getKey();
@@ -213,8 +212,7 @@ public class MainController {
       button.requestFocus();
     }
   }
-
-  @NotNull
+  
   private ToggleButton updateGuessItem(ActionEvent event) {
     Integer codePoint = (Integer) ((Node) event.getSource()).getUserData();
     ToggleButton button = (ToggleButton) group.getSelectedToggle();
