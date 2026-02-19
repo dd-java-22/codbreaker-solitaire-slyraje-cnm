@@ -107,7 +107,14 @@ public class MainController {
    */
   @FXML
   protected void submitGuess() {
-    // TODO: Build guess text from codepoints in group, invoke viewModel.submitGuess(text).
+    String guessText = group
+        .getToggles()
+        .stream()
+        .map((toggle) -> (ToggleButton) toggle)
+        .map((button) -> (Integer) button.getUserData())
+        .reduce(new StringBuilder(), StringBuilder::appendCodePoint, StringBuilder::append)
+        .toString();
+    viewModel.submitGuess(guessText);
   }
 
   private void loadGameProperties() {
@@ -151,7 +158,7 @@ public class MainController {
   }
 
   private void handleGame(Game game) {
-    // TODO: Add logic to handle null gamee reference (e.g., after deleting current game).
+    // TODO: Add logic to handle null game reference (e.g., after deleting current game).
     this.game = game;
     gameState.setText(game.toString()); // FIXME: Remove and replace with list view.
     buildPalette();
