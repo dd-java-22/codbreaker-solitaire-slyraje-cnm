@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.ListView?>
 <GridPane
   xmlns="http://javafx.com/javafx"
   xmlns:fx="http://javafx.com/fxml"
@@ -28,21 +29,11 @@
     <RowConstraints vgrow="NEVER" minHeight="32"/>
   </rowConstraints>
 
-  <!--suppress JavaFxRedundantPropertyValue -->
-  <ScrollPane
-    fx:id="scrollPane"
-    hbarPolicy="NEVER"
-    vbarPolicy="AS_NEEDED"
+  <ListView
+    fx:id="guessHistory"
     GridPane.columnIndex="0"
     GridPane.rowIndex="0"
-    GridPane.columnSpan="2">
-
-    <TextFlow
-      fx:id="textFlow">
-      <Text fx:id="gameState"/>
-    </TextFlow>
-
-  </ScrollPane>
+    GridPane.columnSpan="2"/>
 
   <TilePane
     fx:id="guessContainer"
