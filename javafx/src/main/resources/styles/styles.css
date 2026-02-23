@@ -238,3 +238,16 @@ GridPane.root {
 #guessScore #nearCount {
   -fx-font-size: 16px;
 }
+
+#newGame .new-game {
+  -fx-min-height: 24px;
+  -fx-min-width: 24px;
+  -fx-alignment: center;
+  -fx-border-color: #404040;
+  -fx-border-width: 1px;
+  -fx-background-color: transparent;
+  -fx-shape: "M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z";
+  -fx-padding: 2px;
+  -fx-cursor: hand;
+  -fx-opacity: 1;
+}
