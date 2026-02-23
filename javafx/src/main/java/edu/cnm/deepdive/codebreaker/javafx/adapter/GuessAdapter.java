@@ -1,7 +1,7 @@
-package edu.cnm.deepdive.codebreaker.client.adapter;
+package edu.cnm.deepdive.codebreaker.javafx.adapter;
 
 import edu.cnm.deepdive.codebreaker.api.model.Guess;
-import edu.cnm.deepdive.codebreaker.client.util.CodePointInfo;
+import edu.cnm.deepdive.codebreaker.javafx.util.CodePointInfo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -51,7 +52,7 @@ public class GuessAdapter implements Callback<ListView<Guess>, ListCell<Guess>> 
     @FXML
     private HBox guessContent;
     @FXML
-    private HBox guessScore;
+    private AnchorPane guessScore;
     @FXML
     private Text exactCount;
     @FXML

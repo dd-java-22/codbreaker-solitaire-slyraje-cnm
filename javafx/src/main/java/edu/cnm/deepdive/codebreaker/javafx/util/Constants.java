@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.codebreaker.client.util;
+package edu.cnm.deepdive.codebreaker.javafx.util;
 
 public final class Constants {
 

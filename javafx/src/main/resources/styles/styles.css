@@ -4,22 +4,14 @@
   -fx-padding: 5px;
 }
 
-GridPane {
+GridPane.root {
   -fx-pref-width: 300px;
   -fx-pref-height: 600px;
   -fx-min-width: 300px;
   -fx-min-height: 600px;
-}
-
-#scrollPane {
-  -fx-background-color: #1e1e1e;
-  -fx-background-insets: 0;
-  -fx-border-color: #444444;
-  -fx-border-width: 1px;
-}
-
-#textFlow {
   -fx-padding: 10px;
+  -fx-hgap: 10px;
+  -fx-vgap: 10px;
 }
 
 #gameState {
@@ -131,7 +123,8 @@ GridPane {
   -fx-background-color: #A0A0A0;
 }
 
-#guessContainer .radio-button .graphic-region {
+#guessContainer .radio-button .graphic-region,
+#guessContent .label .graphic-region {
   -fx-min-width: 32px;
   -fx-min-height: 32px;
   -fx-border-color: black;
@@ -144,76 +137,104 @@ GridPane {
   -fx-stroke: -fx-text-fill;
 }
 
-#guessContainer .radio-button.red-fill ,
+#guessContainer .radio-button.red-fill,
 #guessPalette .button.red-fill {
   -fx-text-fill: white;
+
 }
 
 /* TODO: Define text fills for the other colors, as the above does for .red-fill. */
 
+#guessHistory .guess-history-item {
+  -fx-min-height: 48px;
+  -fx-pref-height: 48px;
+  -fx-max-height: 48px;
+}
+
+#guessHistory .list-cell {
+  -fx-padding: 0;
+  -fx-end-margin: 0;
+  -fx-start-margin: 0;
+}
+
+#guessContent {
+  -fx-min-height: 48px;
+  -fx-pref-height: 48px;
+  -fx-max-height: 48px;
+  -fx-max-width: Infinity;
+  -fx-alignment: center;
+  -fx-spacing: 8px;
+  -fx-padding: 0;
+}
+
+#guessScore {
+  -fx-min-height: 48px;
+  -fx-pref-height: 48px;
+  -fx-max-height: 48px;
+  -fx-max-width: Infinity;
+  -fx-alignment: center;
+  -fx-padding: 5px 10px 5px 0;
+  -fx-background-insets: 5px 10px 5px 5px;
+  -fx-shape: "M 98,0 h 2, L 2,100 h -2 z";
+  -fx-background-color: black;
+}
+
 /* TODO: Refine shape definitions. */
 
 #guessContainer .radio-button.red-fill .graphic-region,
-#guessPalette .button.red-fill .graphic-region {
+#guessPalette .button.red-fill .graphic-region,
+#guessHistory #guessContent .label.red-fill .graphic-region {
   -fx-background-color: red;
-  -fx-shape: "M 0,50
-      a 50, 50 0 1,0 100, 0
-      a 50, 50 0 1,0 -100, 0
-      z";
+  -fx-shape: "M 0,50 a 50, 50 0 1, 0 100, 0 a 50, 50 0 1, 0 -100, 0 z ";
 }
 
 #guessContainer .radio-button.orange-fill .graphic-region,
-#guessPalette .button.orange-fill .graphic-region {
+#guessPalette .button.orange-fill .graphic-region,
+#guessHistory #guessContent .label.orange-fill .graphic-region {
   -fx-background-color: orange;
-  -fx-shape: "M 0,50
-  a 50, 50 0 1,0 100, 0
-  a 50, 50 0 1,0 -100, 0
-  z";
+  -fx-shape: "M 0,50 a 50, 50 0 1, 0 100, 0 a 50, 50 0 1, 0 -100, 0 z ";
 }
 
 #guessContainer .radio-button.yellow-fill .graphic-region,
-#guessPalette .button.yellow-fill .graphic-region {
+#guessPalette .button.yellow-fill .graphic-region,
+#guessHistory #guessContent .label.yellow-fill .graphic-region {
   -fx-background-color: yellow;
-  -fx-shape: "M 0,50
-  a 50, 50 0 1,0 100, 0
-  a 50, 50 0 1,0 -100, 0
-  z";
+  -fx-shape: "M 0,50 a 50, 50 0 1, 0 100, 0 a 50, 50 0 1, 0 -100, 0 z ";
 }
 
 #guessContainer .radio-button.green-fill .graphic-region,
-#guessPalette .button.green-fill .graphic-region {
+#guessPalette .button.green-fill .graphic-region,
+#guessHistory #guessContent .label.green-fill .graphic-region {
   -fx-background-color: green;
-  -fx-shape: "M 0,50
-      l 50,-50
-      l 50,50
-      l -50,50
-      z";
+  -fx-shape: "M 0,50 l 50, -50 l 50, 50 l -50, 50 z ";
 }
 
 #guessContainer .radio-button.blue-fill .graphic-region,
-#guessPalette .button.blue-fill .graphic-region {
+#guessPalette .button.blue-fill .graphic-region,
+#guessHistory #guessContent .label.blue-fill .graphic-region {
   -fx-background-color: blue;
-  -fx-shape: "M 0,100
-      h 100
-      l -50,-100
-      z";
+  -fx-shape: "M 0,100 h 100 l -50, -100 z ";
 }
 
 #guessContainer .radio-button.indigo-fill .graphic-region,
-#guessPalette .button.indigo-fill .graphic-region {
+#guessPalette .button.indigo-fill .graphic-region,
+#guessHistory #guessContent .label.indigo-fill .graphic-region {
   -fx-background-color: indigo;
-  -fx-shape: "M 0,50
-  a 50, 50 0 1,0 100, 0
-  a 50, 50 0 1,0 -100, 0
-  z";
+  -fx-shape: "M 0,50 a 50, 50 0 1, 0 100, 0 a 50, 50 0 1, 0 -100, 0 z ";
 }
 
 #guessContainer .radio-button.violet-fill .graphic-region,
-#guessPalette .button.violet-fill .graphic-region {
+#guessPalette .button.violet-fill .graphic-region,
+#guessHistory #guessContent .label.violet-fill .graphic-region {
   -fx-background-color: violet;
-  -fx-shape: "M 0,50
-  a 50, 50 0 1,0 100, 0
-  a 50, 50 0 1,0 -100, 0
-  z";
+  -fx-shape: "M 0,50 a 50, 50 0 1, 0 100, 0 a 50, 50 0 1, 0 -100, 0 z ";
 }
 
+#guessScore #exactCount {
+  -fx-font-weight: bold;
+  -fx-font-size: 16px;
+}
+
+#guessScore #nearCount {
+  -fx-font-size: 16px;
+}
