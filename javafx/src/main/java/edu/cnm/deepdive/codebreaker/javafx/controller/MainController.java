@@ -15,6 +15,8 @@
  */
 package edu.cnm.deepdive.codebreaker.javafx.controller;
 
+import static java.lang.Boolean.TRUE;
+
 import edu.cnm.deepdive.codebreaker.api.model.Game;
 import edu.cnm.deepdive.codebreaker.api.model.Guess;
 import edu.cnm.deepdive.codebreaker.javafx.adapter.GuessAdapter;
@@ -159,7 +161,8 @@ public class MainController implements Stoppable {
   }
 
   private void updateSend() {
-    boolean sendDisabled = group
+    boolean sendDisabled = Boolean.TRUE.equals(game.getSolved())
+        || group
         .getToggles()
         .stream()
         .anyMatch((toggle) -> ((ToggleButton) toggle).getUserData() == null);
