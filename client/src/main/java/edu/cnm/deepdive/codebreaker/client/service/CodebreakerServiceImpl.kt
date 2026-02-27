@@ -34,7 +34,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.time.OffsetDateTime
 import java.util.*
-import java.util.Map
 import java.util.concurrent.CompletableFuture
 import java.util.function.IntPredicate
 import java.util.function.Supplier
@@ -48,7 +47,7 @@ internal object CodebreakerServiceImpl : CodebreakerService {
         val properties: Properties = loadProperties()
         val gson: Gson = buildGson()
         client = buildClient(properties)
-        api = buildApi(properties, gson, client)
+        api = client.buildApi(properties, gson)
     }
 
     override fun startGame(game: Game): CompletableFuture<Game> {
@@ -110,7 +109,7 @@ internal object CodebreakerServiceImpl : CodebreakerService {
 
     private fun buildGetGuessFuture(gameId: String, guessId: String): CompletableFuture<Guess> {
         return CompletableFuture<Guess>().apply {
-            api.getGuess(gameId, guessId).enqueue(ServiceCallback<Guess?>(this))
+            api.getGuess(gameId, guessId).enqueue(ServiceCallback<Guess>(this))
         }
     }
 }
@@ -118,7 +117,7 @@ internal object CodebreakerServiceImpl : CodebreakerService {
 private class OffsetDateTimeAdapter : TypeAdapter<OffsetDateTime?>() {
     @Throws(IOException::class)
     override fun write(jsonWriter: JsonWriter, offsetDateTime: OffsetDateTime?) {
-        jsonWriter.jsonValue(if (offsetDateTime != null) offsetDateTime.toString() else null)
+        jsonWriter.jsonValue(offsetDateTime?.toString())
     }
 
     @Throws(IOException::class)
@@ -127,127 +126,109 @@ private class OffsetDateTimeAdapter : TypeAdapter<OffsetDateTime?>() {
     }
 }
 
-private class ServiceCallback<T>(private val future: CompletableFuture<T?>) : Callback<T?> {
-    override fun onResponse(call: Call<T?>, response: Response<T?>) {
-        val future = future()
-        if (response.isSuccessful()) {
+private class ServiceCallback<T>(private val future: CompletableFuture<T>) : Callback<T> {
+    override fun onResponse(call: Call<T>, response: Response<T>) {
+        val future = future
+        if (response.isSuccessful) {
             future.complete(response.body())
         } else {
             future.completeExceptionally(
                 CODES_TO_EXCEPTIONS.getOrDefault(
                     response.code(),
-                    java.util.function.Supplier { UnknownServiceException() })!!.get()
+                    Supplier { UnknownServiceException() })?.get()
             )
         }
     }
 
-    override fun onFailure(call: Call<T?>, throwable: Throwable) {
+    override fun onFailure(call: Call<T>, throwable: Throwable) {
         future.completeExceptionally(throwable)
     }
-
-    protected fun future(): CompletableFuture<T?> {
-        return future
-    }
 }
 
-private object Holder {
-    val instance: CodebreakerServiceImpl = CodebreakerServiceImpl()
-        get() = Holder.field
-}
+private const val PROPERTIES_FILE = "service.properties"
+private const val LOG_LEVEL_KEY = "logLevel"
+private const val BASE_URL_KEY = "baseUrl"
+private const val MIN_CODE_LENGTH = 1
+private const val MAX_CODE_LENGTH = 20
+private const val MIN_POOL_LENGTH = 1
+private const val MAX_POOL_LENGTH = 255
 
-companion object {
-    private const val PROPERTIES_FILE = "service.properties"
-    private const val LOG_LEVEL_KEY = "logLevel"
-    private const val BASE_URL_KEY = "baseUrl"
-    private const val MIN_CODE_LENGTH = 1
-    private const val MAX_CODE_LENGTH = 20
-    private const val MIN_POOL_LENGTH = 1
-    private const val MAX_POOL_LENGTH = 255
+private val CODES_TO_EXCEPTIONS: Map<Int, Supplier<out java.lang.RuntimeException>> = mapOf(
+        400 to  Supplier { InvalidPayloadException() },
+        404 to  Supplier { ResourceNotFoundException() },
+        409 to  Supplier { GameSolvedException() },
+        500 to  Supplier { UnknownServiceException() }
+    )
 
-    private val CODES_TO_EXCEPTIONS: MutableMap<Int?, Supplier<Throwable?>?> =
-        Map.ofEntries<Int?, Supplier<Throwable?>?>(
-            Map.entry<Int?, Supplier<Throwable?>?>(400, Supplier { InvalidPayloadException() }),
-            Map.entry<Int?, Supplier<Throwable?>?>(
-                404,
-                Supplier { ResourceNotFoundException() }),
-            Map.entry<Int?, Supplier<Throwable?>?>(409, Supplier { GameSolvedException() }),
-            Map.entry<Int?, Supplier<Throwable?>?>(500, Supplier { UnknownServiceException() })
-        )
-
-    private fun loadProperties(): Properties {
-        val properties = Properties()
-        try {
-            CodebreakerServiceImpl::class.java.getClassLoader().getResourceAsStream(
-                PROPERTIES_FILE
-            ).use { input ->
-                properties.load(input)
-                return properties
-            }
-        } catch (e: IOException) {
-            throw RuntimeException(e)
+private fun loadProperties(): Properties {
+    val properties = Properties()
+    try {
+        CodebreakerServiceImpl::class.java.classLoader.getResourceAsStream(
+            PROPERTIES_FILE
+        ).use { input ->
+            properties.load(input)
+            return properties
         }
+    } catch (e: IOException) {
+        throw RuntimeException(e)
     }
+}
 
-    private fun buildGson(): Gson {
-        return GsonBuilder()
-            .registerTypeAdapter(OffsetDateTime::class.java, OffsetDateTimeAdapter())
-            .create()
-    }
+private fun buildGson(): Gson {
+    return GsonBuilder()
+        .registerTypeAdapter(OffsetDateTime::class.java, OffsetDateTimeAdapter())
+        .create()
+}
 
-    private fun buildClient(properties: Properties): OkHttpClient {
-        val interceptor: Interceptor = HttpLoggingInterceptor()
-            .setLevel(
-                valueOf.valueOf(
-                    properties.getProperty(LOG_LEVEL_KEY).uppercase(Locale.getDefault())
-                )
+private fun buildClient(properties: Properties): OkHttpClient {
+    val interceptor: Interceptor = HttpLoggingInterceptor()
+        .setLevel(
+            HttpLoggingInterceptor.Level.valueOf(
+                properties.getProperty(LOG_LEVEL_KEY).uppercase()
             )
-        return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
-    }
-
-    private fun buildApi(
-        properties: Properties,
-        gson: Gson,
-        client: OkHttpClient
-    ): CodebreakerApi {
-        return Retrofit.Builder()
-            .baseUrl(properties.getProperty(BASE_URL_KEY))
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(client)
-            .build()
-            .create<CodebreakerApi>(CodebreakerApi::class.java)
-    }
-
-    private fun isValidGame(game: Game): Boolean {
-        val codeLength = game.getLength()
-        val pool = game.getPool()
-        val poolLength = pool.length
-        return codeLength >= MIN_CODE_LENGTH && codeLength <= MAX_CODE_LENGTH && poolLength >= MIN_POOL_LENGTH && poolLength <= MAX_POOL_LENGTH && pool.codePoints()
-            .allMatch(IntPredicate { codePoint: Int ->
-                Character.isDefined(codePoint)
-                        && !Character.isWhitespace(codePoint) && !Character.isISOControl(
-                    codePoint
-                )
-            })
-    }
-
-    private fun isValidGuess(game: Game, guess: Guess): Boolean {
-        var valid = true
-        if (guess.getText().length != game.getLength()) {
-            valid = false
-        } else {
-            val poolCodePoints = game
-                .getPool()
-                .codePoints()
-                .boxed()
-                .collect(Collectors.toSet())
-            valid = guess
-                .getText()
-                .codePoints()
-                .allMatch(IntPredicate { o: Int -> poolCodePoints.contains(o) })
-        }
-        return valid
-    }
+        )
+    return OkHttpClient.Builder()
+        .addInterceptor(interceptor)
+        .build()
 }
+
+private fun OkHttpClient.buildApi(properties: Properties, gson: Gson): CodebreakerApi {
+    return Retrofit.Builder()
+        .baseUrl(properties.getProperty(BASE_URL_KEY))
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .client(this)
+        .build()
+        .create<CodebreakerApi>(CodebreakerApi::class.java)
 }
+
+private fun isValidGame(game: Game): Boolean {
+    val codeLength = game.getLength()
+    val pool = game.getPool()
+    val poolLength = pool.length
+    return codeLength >= MIN_CODE_LENGTH && codeLength <= MAX_CODE_LENGTH && poolLength >= MIN_POOL_LENGTH && poolLength <= MAX_POOL_LENGTH && pool.codePoints()
+        .allMatch(IntPredicate { codePoint: Int ->
+            Character.isDefined(codePoint)
+                    && !Character.isWhitespace(codePoint) && !Character.isISOControl(
+                codePoint
+            )
+        })
+}
+
+private fun isValidGuess(game: Game, guess: Guess): Boolean {
+    var valid = true
+    if (guess.getText().length != game.getLength()) {
+        valid = false
+    } else {
+        val poolCodePoints = game
+            .getPool()
+            .codePoints()
+            .boxed()
+            .collect(Collectors.toSet())
+        valid = guess
+            .getText()
+            .codePoints()
+            .allMatch(IntPredicate { o: Int -> poolCodePoints.contains(o) })
+    }
+    return valid
+}
+
