@@ -35,7 +35,6 @@ import java.io.IOException
 import java.time.OffsetDateTime
 import java.util.*
 import java.util.concurrent.CompletableFuture
-import java.util.function.IntPredicate
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
@@ -85,31 +84,31 @@ internal object CodebreakerServiceImpl : CodebreakerService {
 
     private fun buildStartGameFuture(game: Game): CompletableFuture<Game> {
         return CompletableFuture<Game>().apply {
-            api.startGame(game).enqueue(ServiceCallback<Game>(this))
+            api.startGame(game).enqueue(ServiceCallback(this))
         }
     }
 
     private fun buildGetGameFuture(gameId: String): CompletableFuture<Game> {
         return CompletableFuture<Game>().apply {
-            api.getGame(gameId).enqueue(ServiceCallback<Game>(this))
+            api.getGame(gameId).enqueue(ServiceCallback(this))
         }
     }
 
     private fun buildDeleteGameFuture(gameId: String): CompletableFuture<Void?> {
         return CompletableFuture<Void?>().apply {
-            api.deleteGame(gameId).enqueue(ServiceCallback<Void?>(this))
+            api.deleteGame(gameId).enqueue(ServiceCallback(this))
         }
     }
 
     private fun buildSubmitGuessFuture(game: Game, guess: Guess): CompletableFuture<Guess> {
         return CompletableFuture<Guess>().apply {
-            api.submitGuess(game.getId(), guess).enqueue(ServiceCallback<Guess>(this))
+            api.submitGuess(game.id, guess).enqueue(ServiceCallback(this))
         }
     }
 
     private fun buildGetGuessFuture(gameId: String, guessId: String): CompletableFuture<Guess> {
         return CompletableFuture<Guess>().apply {
-            api.getGuess(gameId, guessId).enqueue(ServiceCallback<Guess>(this))
+            api.getGuess(gameId, guessId).enqueue(ServiceCallback(this))
         }
     }
 }
@@ -135,7 +134,7 @@ private class ServiceCallback<T>(private val future: CompletableFuture<T>) : Cal
             future.completeExceptionally(
                 CODES_TO_EXCEPTIONS.getOrDefault(
                     response.code(),
-                    Supplier { UnknownServiceException() })?.get()
+                    Supplier { UnknownServiceException() }).get()
             )
         }
     }
@@ -154,11 +153,11 @@ private const val MIN_POOL_LENGTH = 1
 private const val MAX_POOL_LENGTH = 255
 
 private val CODES_TO_EXCEPTIONS: Map<Int, Supplier<out java.lang.RuntimeException>> = mapOf(
-        400 to  Supplier { InvalidPayloadException() },
-        404 to  Supplier { ResourceNotFoundException() },
-        409 to  Supplier { GameSolvedException() },
-        500 to  Supplier { UnknownServiceException() }
-    )
+    400 to Supplier { InvalidPayloadException() },
+    404 to Supplier { ResourceNotFoundException() },
+    409 to Supplier { GameSolvedException() },
+    500 to Supplier { UnknownServiceException() }
+)
 
 private fun loadProperties(): Properties {
     val properties = Properties()
@@ -198,37 +197,34 @@ private fun OkHttpClient.buildApi(properties: Properties, gson: Gson): Codebreak
         .addConverterFactory(GsonConverterFactory.create(gson))
         .client(this)
         .build()
-        .create<CodebreakerApi>(CodebreakerApi::class.java)
+        .create(CodebreakerApi::class.java)
 }
 
 private fun isValidGame(game: Game): Boolean {
-    val codeLength = game.getLength()
-    val pool = game.getPool()
+    val codeLength = game.length
+    val pool = game.pool
     val poolLength = pool.length
-    return codeLength >= MIN_CODE_LENGTH && codeLength <= MAX_CODE_LENGTH && poolLength >= MIN_POOL_LENGTH && poolLength <= MAX_POOL_LENGTH && pool.codePoints()
-        .allMatch(IntPredicate { codePoint: Int ->
+    return codeLength in MIN_CODE_LENGTH..MAX_CODE_LENGTH && poolLength >= MIN_POOL_LENGTH && poolLength <= MAX_POOL_LENGTH && pool.codePoints()
+        .allMatch { codePoint: Int ->
             Character.isDefined(codePoint)
                     && !Character.isWhitespace(codePoint) && !Character.isISOControl(
                 codePoint
             )
-        })
+        }
 }
 
 private fun isValidGuess(game: Game, guess: Guess): Boolean {
-    var valid = true
-    if (guess.getText().length != game.getLength()) {
-        valid = false
+    return if (guess.text.length != game.length) {
+        false
     } else {
         val poolCodePoints = game
-            .getPool()
+            .pool
             .codePoints()
             .boxed()
             .collect(Collectors.toSet())
-        valid = guess
-            .getText()
+        guess.text
             .codePoints()
-            .allMatch(IntPredicate { o: Int -> poolCodePoints.contains(o) })
+            .allMatch { poolCodePoints.contains(it) }
     }
-    return valid
 }
 
