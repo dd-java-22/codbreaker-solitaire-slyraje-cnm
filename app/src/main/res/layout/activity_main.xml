@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/test_view"
+        android:id="@+id/response"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Test Title"
@@ -25,6 +25,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test_view" />
+        app:layout_constraintTop_toBottomOf="@+id/response" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
