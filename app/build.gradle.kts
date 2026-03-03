@@ -80,6 +80,13 @@ android {
         // dataBinding = true
     }
 
+    packaging {
+        resources {
+            excludes += "/META-INF/NOTICE.md"
+            excludes += "/META-INF/LICENSE.md"
+        }
+    }
+
 }
 
 dependencies {
@@ -190,9 +197,8 @@ android.applicationVariants.configureEach {
         )
 
         if (project.hasProperty("javadocDestDir")) {
-            setDestinationDir(
+            destinationDir =
                 projectDir.toPath().resolve(project.property("javadocDestDir") as String).toFile()
-            )
         }
 
         doFirst {
