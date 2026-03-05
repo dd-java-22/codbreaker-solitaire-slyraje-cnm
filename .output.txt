@@ -1,226 +1,480 @@
-warning: in the working copy of 'app/src/main/res/values/colors.xml', LF will be replaced by CRLF the next time Git touches it
-diff --git a/app/src/main/res/drawable/slot_background.xml b/app/src/main/res/drawable/slot_background.xml
-index 4235b1b..8425fc1 100644
---- a/app/src/main/res/drawable/slot_background.xml
-+++ b/app/src/main/res/drawable/slot_background.xml
-@@ -1,8 +1,8 @@
- <?xml version="1.0" encoding="utf-8"?>
- <shape xmlns:android="http://schemas.android.com/apk/res/android"
--    android:shape="rectangle">
-+    android:shape="oval">
-   <stroke
-       android:width="2dp"
-       android:color="?attr/colorOutline" />
--  <solid android:color="@android:color/transparent" />
-+  <solid android:color="@android:color/darker_gray" />
- </shape>
-\ No newline at end of file
-diff --git a/app/src/main/res/drawable/symbol.xml b/app/src/main/res/drawable/symbol.xml
-index e5d6be9..424da5b 100644
---- a/app/src/main/res/drawable/symbol.xml
-+++ b/app/src/main/res/drawable/symbol.xml
-@@ -1,4 +1,8 @@
- <?xml version="1.0" encoding="utf-8"?>
--<shape xmlns:android="http://schemas.android.com/apk/res/android">
--
-+<shape xmlns:android="http://schemas.android.com/apk/res/android"
-+  android:shape="oval">
-+  <solid android:color="@android:color/darker_gray" />
-+  <stroke
-+    android:width="1dp"
-+    android:color="@android:color/white" />
- </shape>
-\ No newline at end of file
-diff --git a/app/src/main/res/layout/fragment_game.xml b/app/src/main/res/layout/fragment_game.xml
-index cfb6e35..6bb4499 100644
---- a/app/src/main/res/layout/fragment_game.xml
-+++ b/app/src/main/res/layout/fragment_game.xml
-@@ -58,7 +58,7 @@
-       android:layout_margin="2dp"
-       android:background="@drawable/slot_background"
-       android:gravity="center"
--      tools:text="A"/>
-+      tools:text="R"/>
-
-     <TextView
-       android:id="@+id/slot_1"
-@@ -97,30 +97,80 @@
-
-   </LinearLayout>
-
--  <com.google.android.material.chip.ChipGroup
-+  <LinearLayout
-     android:id="@+id/palette"
-     android:layout_width="0dp"
-     android:layout_height="wrap_content"
-+    android:orientation="horizontal"
-+    android:gravity="center_horizontal"
-     app:layout_constraintBottom_toBottomOf="parent"
--    app:layout_constraintEnd_toEndOf="parent"
--    app:layout_constraintStart_toStartOf="parent">
-+    app:layout_constraintStart_toStartOf="parent"
-+    app:layout_constraintEnd_toEndOf="parent">
-
--    <!-- Placeholder symbol buttons -->
-     <Button
--      android:layout_width="wrap_content"
--      android:layout_height="wrap_content"
--      android:text="A"/>
-+      android:id="@+id/palette_r"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="R"
-+      android:textColor="@android:color/white"
-+      android:backgroundTint="@color/red"/>
-
-     <Button
--      android:layout_width="wrap_content"
--      android:layout_height="wrap_content"
--      android:text="B"/>
-+      android:id="@+id/palette_o"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="O"
-+      android:textColor="@android:color/black"
-+      android:backgroundTint="@color/orange"/>
-
-     <Button
--      android:layout_width="wrap_content"
--      android:layout_height="wrap_content"
--      android:text="C"/>
-+      android:id="@+id/palette_y"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="Y"
-+      android:textColor="@android:color/black"
-+      android:backgroundTint="@color/yellow"/>
-+
-+    <Button
-+      android:id="@+id/palette_g"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="G"
-+      android:textColor="@android:color/black"
-+      android:backgroundTint="@color/green"/>
-+
-+    <Button
-+      android:id="@+id/palette_b"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="B"
-+      android:textColor="@android:color/white"
-+      android:backgroundTint="@color/blue"/>
-+
-+    <Button
-+      android:id="@+id/palette_i"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="I"
-+      android:textColor="@android:color/white"
-+      android:backgroundTint="@color/indigo"/>
-+
-+    <Button
-+      android:id="@+id/palette_v"
-+      android:layout_width="0dp"
-+      android:layout_height="48dp"
-+      android:layout_weight="1"
-+      android:text="V"
-+      android:textColor="@android:color/white"
-+      android:backgroundTint="@color/violet"/>
-+
-+  </LinearLayout>
-
--  </com.google.android.material.chip.ChipGroup>
-
- </androidx.constraintlayout.widget.ConstraintLayout>
-diff --git a/app/src/main/res/values/colors.xml b/app/src/main/res/values/colors.xml
-index e8c546c..2e64ed4 100644
---- a/app/src/main/res/values/colors.xml
-+++ b/app/src/main/res/values/colors.xml
-@@ -6,4 +6,13 @@
-   <color name="blue">#FF0000FF</color>
-   <color name="indigo">#FF4B0082</color>
-   <color name="violet">#FFEE82EE</color>
-+  <array name="color_values">
-+    <item>@color/red</item>
-+    <item>@color/orange</item>
-+    <item>@color/yellow</item>
-+    <item>@color/green</item>
-+    <item>@color/blue</item>
-+    <item>@color/indigo</item>
-+    <item>@color/violet</item>
-+  </array>
- </resources>
-\ No newline at end of file
-diff --git a/app/src/main/res/values/integers.xml b/app/src/main/res/values/integers.xml
-index 55344e5..831ad0c 100644
---- a/app/src/main/res/values/integers.xml
-+++ b/app/src/main/res/values/integers.xml
-@@ -1,3 +1,22 @@
- <?xml version="1.0" encoding="utf-8"?>
- <resources>
-+  <integer-array name="color_drawables">
-+    <item>@integer/red</item>
-+    <item>@integer/orange</item>
-+    <item>@integer/yellow</item>
-+    <item>@integer/green</item>
-+    <item>@integer/blue</item>
-+    <item>@integer/indigo</item>
-+    <item>@integer/violet</item>
-+  </integer-array>
-+
-+  <integer name="red">
-+    #FFFF0000
-+  </integer>
-+  <integer name="orange">
-+    #FFFFA500
-+  </integer>
-+  <integer name="yellow">
-+    #FFFFFF00
-+  </integer>
- </resources>
-\ No newline at end of file
-diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
-index 4ff3e6c..1d83761 100644
---- a/app/src/main/res/values/strings.xml
-+++ b/app/src/main/res/values/strings.xml
-@@ -6,4 +6,33 @@
-     <string name="status_placeholder">Status Message</string>
-     <string name="guess_placeholder">Guess</string>
-     <string name="feedback_format">%1$d/%2$d</string>
-+
-+    <string name="red">Red</string>
-+    <string name="orange">Orange</string>
-+    <string name="yellow">Yellow</string>
-+    <string name="green">Green</string>
-+    <string name="blue">Blue</string>
-+    <string name="indigo">Indigo</string>
-+    <string name="violet">Violet</string>
-+
-+    <string-array name="color_names">
-+        <item>@string/red</item>
-+        <item>@string/orange</item>
-+        <item>@string/yellow</item>
-+        <item>@string/green</item>
-+        <item>@string/blue</item>
-+        <item>@string/indigo</item>
-+        <item>@string/violet</item>
-+    </string-array>
-+
-+    <string-array name="color_keys">
-+        <item>R</item>
-+        <item>O</item>
-+        <item>Y</item>
-+        <item>G</item>
-+        <item>B</item>
-+        <item>I</item>
-+        <item>V</item>
-+    </string-array>
-+
- </resources>
+Starting a Gradle Daemon, 1 stopped Daemon could not be reused, use --status for details
+> Task :tasks
+------------------------------------------------------------
+Tasks runnable from root project 'codebreaker-solitaire'
+------------------------------------------------------------
+Android tasks
+-------------
+app:androidDependencies - Displays the Android dependencies of the project.
+app:signingReport - Displays the signing info for the base and test modules
+app:sourceSets - Prints out all the source sets defined in this project.
+Application tasks
+-----------------
+javafx:run - Runs this project as a JVM application
+Build tasks
+-----------
+api:assemble - Assembles the outputs of this project.
+app:assemble - Assemble main outputs for all the variants.
+client:assemble - Assembles the outputs of this project.
+javafx:assemble - Assembles the outputs of this project.
+app:assembleAndroidTest - Assembles all the Test applications.
+app:assembleUnitTest - Assembles all the unit test applications.
+api:build - Assembles and tests this project.
+app:build - Assembles and tests this project.
+client:build - Assembles and tests this project.
+javafx:build - Assembles and tests this project.
+api:buildDependents - Assembles and tests this project and all projects that depend on it.
+app:buildDependents - Assembles and tests this project and all projects that depend on it.
+client:buildDependents - Assembles and tests this project and all projects that depend on it.
+javafx:buildDependents - Assembles and tests this project and all projects that depend on it.
+app:buildKotlinToolingMetadata - Build metadata json file containing information about the used Kotlin tooling
+client:buildKotlinToolingMetadata - Build metadata json file containing information about the used Kotlin tooling
+api:buildNeeded - Assembles and tests this project and all projects it depends on.
+app:buildNeeded - Assembles and tests this project and all projects it depends on.
+client:buildNeeded - Assembles and tests this project and all projects it depends on.
+javafx:buildNeeded - Assembles and tests this project and all projects it depends on.
+app:bundle - Assemble bundles for all the variants.
+api:classes - Assembles main classes.
+client:classes - Assembles main classes.
+javafx:classes - Assembles main classes.
+api:clean - Deletes the build directory.
+app:clean - Deletes the build directory.
+client:clean - Deletes the build directory.
+javafx:clean - Deletes the build directory.
+app:compileDebugAndroidTestSources
+app:compileDebugSources
+app:compileDebugUnitTestSources
+app:compileReleaseSources
+app:compileReleaseUnitTestSources
+api:jar - Assembles a jar archive containing the classes of the 'main' feature.
+client:jar - Assembles a jar archive containing the classes of the 'main' feature.
+javafx:jar - Assembles a jar archive containing the classes of the 'main' feature.
+client:kotlinSourcesJar - Assembles a jar archive containing the sources of target 'kotlin'.
+api:testClasses - Assembles test classes.
+client:testClasses - Assembles test classes.
+javafx:testClasses - Assembles test classes.
+Build Setup tasks
+-----------------
+init - Initializes a new Gradle build.
+updateDaemonJvm - Generates or updates the Gradle Daemon JVM criteria.
+wrapper - Generates Gradle wrapper files.
+Distribution tasks
+------------------
+javafx:assembleDist - Assembles the main distributions
+javafx:distTar - Bundles the project as a distribution.
+javafx:distZip - Bundles the project as a distribution.
+javafx:installDist - Installs the project as a distribution as-is.
+Documentation tasks
+-------------------
+api:javadoc - Generates Javadoc API documentation for the 'main' feature.
+app:javadoc - Generates Javadoc HTML for all build variants. (Generated output for variants after the first will overwrite the output for previous variants.)
+client:javadoc - Generates Javadoc API documentation for the 'main' feature.
+javafx:javadoc - Generates Javadoc API documentation for the 'main' feature.
+app:javadocDebug - Generates Javadoc for debug build variant.
+app:javadocRelease - Generates Javadoc for release build variant.
+Help tasks
+----------
+artifactTransforms - Displays the Artifact Transforms that can be executed in root project 'codebreaker-solitaire'.
+api:artifactTransforms - Displays the Artifact Transforms that can be executed in project ':api'.
+app:artifactTransforms - Displays the Artifact Transforms that can be executed in project ':app'.
+client:artifactTransforms - Displays the Artifact Transforms that can be executed in project ':client'.
+javafx:artifactTransforms - Displays the Artifact Transforms that can be executed in project ':javafx'.
+buildEnvironment - Displays all buildscript dependencies declared in root project 'codebreaker-solitaire'.
+api:buildEnvironment - Displays all buildscript dependencies declared in project ':api'.
+app:buildEnvironment - Displays all buildscript dependencies declared in project ':app'.
+client:buildEnvironment - Displays all buildscript dependencies declared in project ':client'.
+javafx:buildEnvironment - Displays all buildscript dependencies declared in project ':javafx'.
+dependencies - Displays all dependencies declared in root project 'codebreaker-solitaire'.
+api:dependencies - Displays all dependencies declared in project ':api'.
+app:dependencies - Displays all dependencies declared in project ':app'.
+client:dependencies - Displays all dependencies declared in project ':client'.
+javafx:dependencies - Displays all dependencies declared in project ':javafx'.
+dependencyInsight - Displays the insight into a specific dependency in root project 'codebreaker-solitaire'.
+api:dependencyInsight - Displays the insight into a specific dependency in project ':api'.
+app:dependencyInsight - Displays the insight into a specific dependency in project ':app'.
+client:dependencyInsight - Displays the insight into a specific dependency in project ':client'.
+javafx:dependencyInsight - Displays the insight into a specific dependency in project ':javafx'.
+help - Displays a help message.
+api:help - Displays a help message.
+app:help - Displays a help message.
+client:help - Displays a help message.
+javafx:help - Displays a help message.
+javaToolchains - Displays the detected java toolchains.
+api:javaToolchains - Displays the detected java toolchains.
+app:javaToolchains - Displays the detected java toolchains.
+client:javaToolchains - Displays the detected java toolchains.
+javafx:javaToolchains - Displays the detected java toolchains.
+kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+api:kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+app:kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+client:kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+javafx:kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions.
+outgoingVariants - Displays the outgoing variants of root project 'codebreaker-solitaire'.
+api:outgoingVariants - Displays the outgoing variants of project ':api'.
+app:outgoingVariants - Displays the outgoing variants of project ':app'.
+client:outgoingVariants - Displays the outgoing variants of project ':client'.
+javafx:outgoingVariants - Displays the outgoing variants of project ':javafx'.
+projects - Displays the sub-projects of root project 'codebreaker-solitaire'.
+api:projects - Displays the sub-projects of project ':api'.
+app:projects - Displays the sub-projects of project ':app'.
+client:projects - Displays the sub-projects of project ':client'.
+javafx:projects - Displays the sub-projects of project ':javafx'.
+properties - Displays the properties of root project 'codebreaker-solitaire'.
+api:properties - Displays the properties of project ':api'.
+app:properties - Displays the properties of project ':app'.
+client:properties - Displays the properties of project ':client'.
+javafx:properties - Displays the properties of project ':javafx'.
+resolvableConfigurations - Displays the configurations that can be resolved in root project 'codebreaker-solitaire'.
+api:resolvableConfigurations - Displays the configurations that can be resolved in project ':api'.
+app:resolvableConfigurations - Displays the configurations that can be resolved in project ':app'.
+client:resolvableConfigurations - Displays the configurations that can be resolved in project ':client'.
+javafx:resolvableConfigurations - Displays the configurations that can be resolved in project ':javafx'.
+tasks - Displays the tasks runnable from root project 'codebreaker-solitaire' (some of the displayed tasks may belong to subprojects).
+api:tasks - Displays the tasks runnable from project ':api'.
+app:tasks - Displays the tasks runnable from project ':app'.
+client:tasks - Displays the tasks runnable from project ':client'.
+javafx:tasks - Displays the tasks runnable from project ':javafx'.
+Install tasks
+-------------
+app:installDebug - Installs the Debug build.
+app:installDebugAndroidTest - Installs the android (on device) tests for the Debug build.
+app:uninstallAll - Uninstall all applications.
+app:uninstallDebug - Uninstalls the Debug build.
+app:uninstallDebugAndroidTest - Uninstalls the android (on device) tests for the Debug build.
+app:uninstallRelease - Uninstalls the Release build.
+Openapi tools tasks
+-------------------
+api:openApiGenerate - Generate code via Open API Tools Generator for Open API 2.0 or 3.x specification documents.
+api:openApiGenerateApis
+api:openApiGenerateModels
+api:openApiGenerators - Lists generators available via Open API Generators.
+api:openApiMeta - Generates a new generator to be consumed via Open API Generator.
+api:openApiValidate - Validates an Open API 2.0 or 3.x specification document.
+Verification tasks
+------------------
+api:check - Runs all checks.
+app:check - Runs all checks.
+client:check - Runs all checks.
+javafx:check - Runs all checks.
+app:checkJetifier - Checks whether Jetifier is needed for the current project
+app:checkKotlinGradlePluginConfigurationErrors - Checks that Kotlin Gradle Plugin hasn't reported project configuration errors, failing otherwise. This task always runs before compileKotlin* or similar tasks.
+client:checkKotlinGradlePluginConfigurationErrors - Checks that Kotlin Gradle Plugin hasn't reported project configuration errors, failing otherwise. This task always runs before compileKotlin* or similar tasks.
+app:checkLegacyAbi - Checks that the public Application Binary Interface (ABI) of the current project code matchesthe reference dump file for the 'main' variant.
+client:checkLegacyAbi - Checks that the public Application Binary Interface (ABI) of the current project code matchesthe reference dump file for the 'main' variant.
+app:connectedAndroidTest - Installs and runs instrumentation tests for all flavors on connected devices.
+app:connectedCheck - Runs all device checks on currently connected devices.
+app:connectedDebugAndroidTest - Installs and runs the tests for debug on connected devices.
+app:deviceAndroidTest - Installs and runs instrumentation tests using all Device Providers.
+app:deviceCheck - Runs all device checks using Device Providers and Test Servers.
+api:jacocoTestCoverageVerification - Verifies code coverage metrics based on specified rules for the test task.
+client:jacocoTestCoverageVerification - Verifies code coverage metrics based on specified rules for the test task.
+javafx:jacocoTestCoverageVerification - Verifies code coverage metrics based on specified rules for the test task.
+api:jacocoTestReport - Generates code coverage report for the test task.
+client:jacocoTestReport - Generates code coverage report for the test task.
+javafx:jacocoTestReport - Generates code coverage report for the test task.
+app:lint - Runs lint on the default variant.
+app:lintDebug - Print text output from the corresponding lint report task
+app:lintFix - Runs lint on the default variant and applies any safe suggestions to the source code.
+app:lintRelease - Print text output from the corresponding lint report task
+app:lintVitalRelease - Print text output from the corresponding lint report task
+api:test - Runs the test suite.
+app:test - Run unit tests for all variants.
+client:test - Runs the test suite.
+javafx:test - Runs the test suite.
+app:testDebugUnitTest - Run unit tests for the debug build.
+app:testReleaseUnitTest - Run unit tests for the release build.
+app:updateLegacyAbi - Writes the public Application Binary Interface (ABI) of the current code to the reference dump file for the 'main' variant.
+client:updateLegacyAbi - Writes the public Application Binary Interface (ABI) of the current code to the reference dump file for the 'main' variant.
+app:updateLintBaseline - Updates the lint baseline using the default variant.
+Other tasks
+-----------
+app:analyzeDebugAndroidTestDependencies
+app:analyzeDebugDependencies
+app:analyzeDebugUnitTestDependencies
+app:analyzeReleaseDependencies
+app:analyzeReleaseUnitTestDependencies
+app:asarToCompatSplitsForDebug
+app:asarToCompatSplitsForRelease
+app:assembleDebug - Assembles main output for variant debug
+app:assembleDebugAndroidTest - Assembles main output for variant debugAndroidTest
+app:assembleDebugUnitTest - Assembles main output for variant debugUnitTest
+app:assembleRelease - Assembles main output for variant release
+app:assembleReleaseUnitTest - Assembles main output for variant releaseUnitTest
+app:buildDebugPreBundle
+app:buildReleasePreBundle
+app:bundleDebug - Assembles bundle for variant debug
+app:bundleDebugClassesToCompileJar
+app:bundleDebugClassesToRuntimeJar
+app:bundleDebugResources
+app:bundleRelease - Assembles bundle for variant release
+app:bundleReleaseClassesToCompileJar
+app:bundleReleaseClassesToRuntimeJar
+app:bundleReleaseResources
+app:checkDebugAarMetadata
+app:checkDebugAndroidTestAarMetadata
+app:checkDebugAndroidTestDuplicateClasses
+app:checkDebugDuplicateClasses
+app:checkDebugManifest
+app:checkReleaseAarMetadata
+app:checkReleaseDuplicateClasses
+app:checkReleaseManifest
+app:collectReleaseDependencies
+app:compileDebugAndroidTestJavaWithJavac
+app:compileDebugAndroidTestKotlin - Compiles the debugAndroidTest kotlin.
+app:compileDebugAndroidTestShaders
+app:compileDebugArtProfile
+app:compileDebugJavaWithJavac
+app:compileDebugKotlin - Compiles the debug kotlin.
+app:compileDebugShaders
+app:compileDebugUnitTestJavaWithJavac
+app:compileDebugUnitTestKotlin - Compiles the debugUnitTest kotlin.
+api:compileJava - Compiles main Java source.
+client:compileJava - Compiles main Java source.
+javafx:compileJava - Compiles main Java source.
+client:compileKotlin - Compiles the compilation 'main' in target ''.
+app:compileLint
+app:compileLintChecks
+app:compileReleaseArtProfile
+app:compileReleaseJavaWithJavac
+app:compileReleaseKotlin - Compiles the release kotlin.
+app:compileReleaseShaders
+app:compileReleaseUnitTestJavaWithJavac
+app:compileReleaseUnitTestKotlin - Compiles the releaseUnitTest kotlin.
+api:compileTestJava - Compiles test Java source.
+client:compileTestJava - Compiles test Java source.
+javafx:compileTestJava - Compiles test Java source.
+client:compileTestKotlin - Compiles the compilation 'test' in target ''.
+app:compressDebugAndroidTestAssets
+app:compressDebugAssets
+app:compressReleaseAssets
+app:configureReleaseDependencies
+app:consumeConfigAttr
+app:createDebugAndroidTestApkListingFileRedirect
+app:createDebugApkListingFileRedirect
+app:createDebugApksFromBundleListingFileRedirect
+app:createDebugBundleListingFileRedirect
+app:createDebugCompatibleScreenManifests
+app:createMockableJar
+app:createReleaseApkListingFileRedirect
+app:createReleaseApksFromBundleListingFileRedirect
+app:createReleaseBundleListingFileRedirect
+app:createReleaseCompatibleScreenManifests
+app:dataBindingGenBaseClassesDebug
+app:dataBindingGenBaseClassesDebugAndroidTest
+app:dataBindingGenBaseClassesRelease
+app:dataBindingMergeDependencyArtifactsDebug
+app:dataBindingMergeDependencyArtifactsDebugAndroidTest
+app:dataBindingMergeDependencyArtifactsRelease
+app:desugarDebugAndroidTestFileDependencies
+app:desugarDebugFileDependencies
+app:desugarReleaseFileDependencies
+app:dexBuilderDebug
+app:dexBuilderDebugAndroidTest
+app:dexBuilderRelease
+app:dumpLegacyAbi - Dumps the public Application Binary Interface (ABI) into files in the build directory for the 'main' variant.
+client:dumpLegacyAbi - Dumps the public Application Binary Interface (ABI) into files in the build directory for the 'main' variant.
+app:extractApksForDebug
+app:extractApksForRelease
+app:extractApksFromBundleForDebug
+app:extractApksFromBundleForRelease
+app:extractDebugNativeDebugMetadata
+app:extractDebugNativeSymbolTables
+app:extractDeepLinksDebug
+app:extractDeepLinksRelease
+app:extractProguardFiles
+app:extractReleaseNativeDebugMetadata
+app:extractReleaseNativeSymbolTables
+app:extractReleaseVersionControlInfo
+app:extractRoomDdl
+app:generateDebugAndroidTestAssets
+app:generateDebugAndroidTestLintModel
+app:generateDebugAndroidTestResources
+app:generateDebugAndroidTestResValues
+app:generateDebugAndroidTestSources
+app:generateDebugAssets
+app:generateDebugFeatureMetadata
+app:generateDebugFeatureTransitiveDeps
+app:generateDebugLintModel
+app:generateDebugLintReportModel
+app:generateDebugManifestClass
+app:generateDebugResources
+app:generateDebugResValues
+app:generateDebugSources
+app:generateDebugUnitTestAssets
+app:generateDebugUnitTestLintModel
+app:generateDebugUnitTestResources
+app:generateDebugUnitTestSources
+app:generateReleaseAssets
+app:generateReleaseFeatureMetadata
+app:generateReleaseFeatureTransitiveDeps
+app:generateReleaseLintModel
+app:generateReleaseLintReportModel
+app:generateReleaseLintVitalReportModel
+app:generateReleaseManifestClass
+app:generateReleaseResources
+app:generateReleaseResValues
+app:generateReleaseSources
+app:generateReleaseUnitTestAssets
+app:generateReleaseUnitTestLintModel
+app:generateReleaseUnitTestResources
+app:generateReleaseUnitTestSources
+app:generateSafeArgsDebug
+app:generateSafeArgsRelease
+app:hiltAggregateDepsDebug
+app:hiltAggregateDepsDebugAndroidTest
+app:hiltAggregateDepsDebugUnitTest
+app:hiltAggregateDepsRelease
+app:hiltAggregateDepsReleaseUnitTest
+app:hiltJavaCompileDebug
+app:hiltJavaCompileDebugAndroidTest
+app:hiltJavaCompileDebugUnitTest
+app:hiltJavaCompileRelease
+app:hiltJavaCompileReleaseUnitTest
+app:javaPreCompileDebug
+app:javaPreCompileDebugAndroidTest
+app:javaPreCompileDebugUnitTest
+app:javaPreCompileRelease
+app:javaPreCompileReleaseUnitTest
+app:lintAnalyzeDebug - Run lint analysis on the debug component
+app:lintAnalyzeDebugAndroidTest - Run lint analysis on the debugAndroidTest component
+app:lintAnalyzeDebugUnitTest - Run lint analysis on the debugUnitTest component
+app:lintAnalyzeRelease - Run lint analysis on the release component
+app:lintAnalyzeReleaseUnitTest - Run lint analysis on the releaseUnitTest component
+app:lintFixDebug - Fix lint on the debug variant
+app:lintFixRelease - Fix lint on the release variant
+app:lintReportDebug - Run lint on the debug variant
+app:lintReportRelease - Run lint on the release variant
+app:lintVitalAnalyzeRelease - Run lint analysis with only the fatal issues enabled
+app:lintVitalReportRelease - Run lint with only the fatal issues enabled on the release variant
+client:mainClasses
+app:makeApkFromBundleForDebug
+app:makeApkFromBundleForRelease
+app:mapDebugAndroidTestSourceSetPaths
+app:mapDebugSourceSetPaths
+app:mapReleaseSourceSetPaths
+app:mergeDebugAndroidTestAssets
+app:mergeDebugAndroidTestGeneratedProguardFiles
+app:mergeDebugAndroidTestGlobalSynthetics
+app:mergeDebugAndroidTestJavaResource
+app:mergeDebugAndroidTestJniLibFolders
+app:mergeDebugAndroidTestNativeLibs
+app:mergeDebugAndroidTestResources
+app:mergeDebugAndroidTestShaders
+app:mergeDebugArtProfile
+app:mergeDebugAssets
+app:mergeDebugGeneratedProguardFiles
+app:mergeDebugGlobalSynthetics
+app:mergeDebugJavaResource
+app:mergeDebugJniLibFolders
+app:mergeDebugNativeDebugMetadata
+app:mergeDebugNativeLibs
+app:mergeDebugResources
+app:mergeDebugShaders
+app:mergeDebugStartupProfile
+app:mergeDexRelease
+app:mergeExtDexDebug
+app:mergeExtDexDebugAndroidTest
+app:mergeExtDexRelease
+app:mergeLibDexDebug
+app:mergeLibDexDebugAndroidTest
+app:mergeProjectDexDebug
+app:mergeProjectDexDebugAndroidTest
+app:mergeReleaseArtProfile
+app:mergeReleaseAssets
+app:mergeReleaseGeneratedProguardFiles
+app:mergeReleaseGlobalSynthetics
+app:mergeReleaseJavaResource
+app:mergeReleaseJniLibFolders
+app:mergeReleaseNativeDebugMetadata
+app:mergeReleaseNativeLibs
+app:mergeReleaseResources
+app:mergeReleaseShaders
+app:mergeReleaseStartupProfile
+app:optimizeReleaseResources
+app:packageDebug
+app:packageDebugAndroidTest
+app:packageDebugBundle
+app:packageDebugResources
+app:packageDebugUniversalApk
+app:packageRelease
+app:packageReleaseBundle
+app:packageReleaseResources
+app:packageReleaseUniversalApk
+app:parseDebugIntegrityConfig
+app:parseDebugLocalResources
+app:parseReleaseIntegrityConfig
+app:parseReleaseLocalResources
+app:preBuild
+app:preDebugAndroidTestBuild
+app:preDebugBuild
+app:preDebugUnitTestBuild
+prepareKotlinBuildScriptModel
+app:prepareLintJarForPublish
+app:preReleaseBuild
+app:preReleaseUnitTestBuild
+app:processApplicationManifestDebugForBundle
+app:processApplicationManifestReleaseForBundle
+app:processDebugAndroidTestJavaRes
+app:processDebugAndroidTestManifest
+app:processDebugAndroidTestResources
+app:processDebugJavaRes
+app:processDebugMainManifest
+app:processDebugManifest
+app:processDebugManifestForPackage
+app:processDebugResources
+app:processDebugUnitTestJavaRes
+app:processManifestDebugForFeature
+app:processManifestReleaseForFeature
+app:processReleaseJavaRes
+app:processReleaseMainManifest
+app:processReleaseManifest
+app:processReleaseManifestForPackage
+app:processReleaseResources
+app:processReleaseUnitTestJavaRes
+api:processResources - Processes main resources.
+client:processResources - Processes main resources.
+javafx:processResources - Processes main resources.
+api:processTestResources - Processes test resources.
+client:processTestResources - Processes test resources.
+javafx:processTestResources - Processes test resources.
+app:produceDebugBundleIdeListingFile
+app:produceReleaseBundleIdeListingFile
+app:resolveConfigAttr
+app:sdkReleaseDependencyData
+app:signDebugBundle
+app:signingConfigWriterDebug
+app:signingConfigWriterDebugAndroidTest
+app:signingConfigWriterRelease
+app:signReleaseBundle
+javafx:startScripts - Creates OS specific scripts to run the project as a JVM application.
+app:stripDebugAndroidTestDebugSymbols
+app:stripDebugDebugSymbols
+app:stripReleaseDebugSymbols
+app:transformDebugAndroidTestClassesWithAsm
+app:transformDebugClassesWithAsm
+app:transformDebugUnitTestClassesWithAsm
+app:transformReleaseClassesWithAsm
+app:transformReleaseUnitTestClassesWithAsm
+app:updateLintBaselineDebug - Update the lint baseline using the debug variant
+app:updateLintBaselineRelease - Update the lint baseline using the release variant
+app:validateSigningDebug
+app:validateSigningDebugAndroidTest
+app:writeDebugAndroidTestSigningConfigVersions
+app:writeDebugApplicationId
+app:writeDebugAppMetadata
+app:writeDebugModuleMetadata
+app:writeDebugSigningConfigVersions
+app:writeFiltersDebugAndroidTest
+app:writeReleaseApplicationId
+app:writeReleaseAppMetadata
+app:writeReleaseModuleMetadata
+app:writeReleaseSigningConfigVersions
+app:zipApksForDebug
+app:zipApksForRelease
+[Incubating] Problems report is available at: file:///C:/Users/Michael/deep-dive/java/projects/codbreaker-solitaire-slyraje-cnm/build/reports/problems/problems-report.html
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+For more on this, please refer to https://docs.gradle.org/9.3.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+BUILD SUCCESSFUL in 12s
+1 actionable task: 1 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.1/userguide/configuration_cache_enabling.html

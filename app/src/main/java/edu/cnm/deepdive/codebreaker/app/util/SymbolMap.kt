@@ -11,6 +11,12 @@ import javax.inject.Singleton;
 
 @Singleton
 class SymbolMap @Inject constructor(@param:ActivityContext private val context: Context) {
+
+
+    private val symbols: Map<Int, SymbolAttributes>
+
+    val keys: List<Int> by lazy { symbols.keys.toList() }
+
     init {
         val names = context.resources.getStringArray(R.array.color_names)
         val valuesTyped = context.resources.obtainTypedArray(R.array.color_values)
@@ -26,6 +32,27 @@ class SymbolMap @Inject constructor(@param:ActivityContext private val context: 
             val drawable = ContextCompat.getDrawable(context, drawableIds[i]) as Drawable
             drawables.add(drawable)
         }
-
+        symbols = keys
+            .mapIndexed { index, key ->
+                key.codePointAt(0) to SymbolAttributes(
+                    values[index],
+                    names[index],
+                    drawables[index]
+                )
+            }
+            .toMap()
     }
+
+    fun getColor(key: Int): Int = symbols.getValue(key).value
+
+    fun getName(key: Int): String = symbols.getValue(key).name
+
+    fun getDrawable(key: Int): Drawable = symbols.getValue(key).drawable
+
+    private data class SymbolAttributes(
+        val value: Int,
+        val name: String,
+        val drawable: Drawable
+    )
+
 }
