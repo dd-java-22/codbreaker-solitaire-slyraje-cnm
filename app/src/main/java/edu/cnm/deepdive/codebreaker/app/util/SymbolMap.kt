@@ -12,7 +12,7 @@ import jakarta.inject.Inject;
 import javax.inject.Singleton;
 
 class SymbolMap @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ActivityContext private val context: Context
 ) {
 
 

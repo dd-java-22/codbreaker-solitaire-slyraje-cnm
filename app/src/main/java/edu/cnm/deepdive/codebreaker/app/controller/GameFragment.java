@@ -9,24 +9,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.codebreaker.app.databinding.FragmentGameBinding;
+import edu.cnm.deepdive.codebreaker.app.util.SymbolMap;
+import jakarta.inject.Inject;
 
 @AndroidEntryPoint
 public class GameFragment extends Fragment {
 
+  @Inject
+  SymbolMap symbolMap;
+
   private FragmentGameBinding binding;
 
-  /**
-   * Public no-arg constructor as required by {@link Fragment}.
-   */
   public GameFragment() {
     // Required empty public constructor
   }
 
-  /**
-   * Static factory method for creating a new instance of this fragment.
-   *
-   * @return A new instance of {@link GameFragment}.
-   */
   public static GameFragment newInstance() {
     return new GameFragment();
   }
