@@ -1,16 +1,19 @@
 package edu.cnm.deepdive.codebreaker.app.util;
 
 import android.content.Context;
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.qualifiers.ActivityContext;
+import dagger.hilt.android.qualifiers.ApplicationContext
 import edu.cnm.deepdive.codebreaker.app.R
 import jakarta.inject.Inject;
 import javax.inject.Singleton;
 
-@Singleton
-class SymbolMap @Inject constructor(@param:ActivityContext private val context: Context) {
+class SymbolMap @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
 
     private val symbols: Map<Int, SymbolAttributes>
@@ -27,11 +30,7 @@ class SymbolMap @Inject constructor(@param:ActivityContext private val context: 
         }
         val keys = context.resources.getStringArray(R.array.color_keys)
         val drawableIds = context.resources.getIntArray(R.array.color_drawables)
-        val drawables = mutableListOf<Drawable>()
-        for (i in 0 until drawableIds.size) {
-            val drawable = ContextCompat.getDrawable(context, drawableIds[i]) as Drawable
-            drawables.add(drawable)
-        }
+        val drawables = getDrawables(context.resources)
         symbols = keys
             .mapIndexed { index, key ->
                 key.codePointAt(0) to SymbolAttributes(
@@ -48,6 +47,17 @@ class SymbolMap @Inject constructor(@param:ActivityContext private val context: 
     fun getName(key: Int): String = symbols.getValue(key).name
 
     fun getDrawable(key: Int): Drawable = symbols.getValue(key).drawable
+
+    private fun getDrawables(res: Resources): List<Drawable> {
+        val typedArray = res.obtainTypedArray(R.array.color_drawables)
+        return try {
+            List(typedArray.length()) { i ->
+                ContextCompat.getDrawable(context, typedArray.getResourceId(i, 0)) as Drawable
+            }
+        } finally {
+            typedArray.recycle()
+        }
+    }
 
     private data class SymbolAttributes(
         val value: Int,
