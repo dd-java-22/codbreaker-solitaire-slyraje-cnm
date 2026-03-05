@@ -1,3 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <integer-array name="color_drawables">
+    <item>@integer/red</item>
+    <item>@integer/orange</item>
+    <item>@integer/yellow</item>
+    <item>@integer/green</item>
+    <item>@integer/blue</item>
+    <item>@integer/indigo</item>
+    <item>@integer/violet</item>
+  </integer-array>
+
+  <integer name="red">
+    #FFFF0000
+  </integer>
+  <integer name="orange">
+    #FFFFA500
+  </integer>
+  <integer name="yellow">
+    #FFFFFF00
+  </integer>
 </resources>
