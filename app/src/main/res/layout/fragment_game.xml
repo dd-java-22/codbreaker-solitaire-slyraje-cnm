@@ -1,129 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".controller.GameFragment">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".controller.GameFragment">
 
   <Button
-      android:id="@+id/new_game"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/new_game"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+    android:id="@+id/new_game"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/new_game"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
 
   <TextView
-      android:id="@+id/status"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      android:text="@string/status_placeholder"
-      app:layout_constraintBottom_toBottomOf="@id/new_game"
-      app:layout_constraintEnd_toStartOf="@id/new_game"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@id/new_game" />
+    android:id="@+id/status"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:text="@string/status_placeholder"
+    app:layout_constraintBottom_toBottomOf="@id/new_game"
+    app:layout_constraintEnd_toStartOf="@id/new_game"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/new_game"/>
 
   <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/guesses"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginBottom="16dp"
-      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-      app:layout_constraintBottom_toTopOf="@id/current_guess_container"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/new_game"
-      tools:listitem="@layout/item_guess" />
+    android:id="@+id/guesses"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_constraintBottom_toTopOf="@id/current_guess_container"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/new_game"
+    tools:listitem="@layout/item_guess"/>
 
   <LinearLayout
-      android:id="@+id/current_guess_container"
+    android:id="@+id/current_guess_container"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toTopOf="@id/palette"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+
+    <!-- TODO: Square slots will be added here or statically -->
+
+    <TextView
+      android:id="@+id/slot_0"
       android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:orientation="horizontal"
-      app:layout_constraintBottom_toTopOf="@id/submit"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent">
-
-    <!-- Square slots will be added here or statically -->
-    <TextView
-        android:id="@+id/slot_0"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:layout_margin="2dp"
-        android:background="@drawable/slot_background"
-        android:gravity="center"
-        tools:text="A" />
+      android:layout_height="48dp"
+      android:layout_weight="1"
+      android:layout_margin="2dp"
+      android:background="@drawable/slot_background"
+      android:gravity="center"
+      tools:text="A"/>
 
     <TextView
-        android:id="@+id/slot_1"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:layout_margin="2dp"
-        android:background="@drawable/slot_background"
-        android:gravity="center"
-        tools:text="B" />
+      android:id="@+id/slot_1"
+      android:layout_width="0dp"
+      android:layout_height="48dp"
+      android:layout_weight="1"
+      android:layout_margin="2dp"
+      android:background="@drawable/slot_background"
+      android:gravity="center"
+      tools:text="B"/>
 
     <TextView
-        android:id="@+id/slot_2"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:layout_margin="2dp"
-        android:background="@drawable/slot_background"
-        android:gravity="center" />
+      android:id="@+id/slot_2"
+      android:layout_width="0dp"
+      android:layout_height="48dp"
+      android:layout_weight="1"
+      android:layout_margin="2dp"
+      android:background="@drawable/slot_background"
+      android:gravity="center"/>
 
     <TextView
-        android:id="@+id/slot_3"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:layout_margin="2dp"
-        android:background="@drawable/slot_background"
-        android:gravity="center" />
-
-  </LinearLayout>
-
-  <Button
+      android:id="@+id/slot_3"
+      android:layout_width="0dp"
+      android:layout_height="48dp"
+      android:layout_weight="1"
+      android:layout_margin="2dp"
+      android:background="@drawable/slot_background"
+      android:gravity="center"/>
+    <Button
       android:id="@+id/submit"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:enabled="false"
       android:text="@string/submit"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent" />
+      />
+
+  </LinearLayout>
 
   <com.google.android.material.chip.ChipGroup
-      android:id="@+id/palette"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="16dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/submit"
-      app:layout_constraintStart_toStartOf="parent">
+    android:id="@+id/palette"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
     <!-- Placeholder symbol buttons -->
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="A" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="A"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="B" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="B"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="C" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="C"/>
 
   </com.google.android.material.chip.ChipGroup>
 
