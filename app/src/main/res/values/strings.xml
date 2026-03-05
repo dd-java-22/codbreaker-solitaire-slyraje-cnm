@@ -6,4 +6,33 @@
     <string name="status_placeholder">Status Message</string>
     <string name="guess_placeholder">Guess</string>
     <string name="feedback_format">%1$d/%2$d</string>
+
+    <string name="red">Red</string>
+    <string name="orange">Orange</string>
+    <string name="yellow">Yellow</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="indigo">Indigo</string>
+    <string name="violet">Violet</string>
+
+    <string-array name="color_names">
+        <item>@string/red</item>
+        <item>@string/orange</item>
+        <item>@string/yellow</item>
+        <item>@string/green</item>
+        <item>@string/blue</item>
+        <item>@string/indigo</item>
+        <item>@string/violet</item>
+    </string-array>
+
+    <string-array name="color_keys">
+        <item>R</item>
+        <item>O</item>
+        <item>Y</item>
+        <item>G</item>
+        <item>B</item>
+        <item>I</item>
+        <item>V</item>
+    </string-array>
+
 </resources>

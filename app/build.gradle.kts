@@ -117,6 +117,9 @@ dependencies {
     // Material Design components
     implementation(libs.material)
 
+    // Kotlin standard library (optional but recommended for clarity)
+    implementation(libs.kotlin)
+
     // Room annotation processor, runtime library
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
