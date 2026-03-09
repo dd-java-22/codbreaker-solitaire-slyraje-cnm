@@ -7,55 +7,53 @@
   android:layout_height="match_parent"
   tools:context=".controller.GameFragment">
 
-  <Button
-    android:id="@+id/new_game"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/new_game"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
-
-  <TextView
-    android:id="@+id/status"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:text="@string/status_placeholder"
-    app:layout_constraintBottom_toBottomOf="@id/new_game"
-    app:layout_constraintEnd_toStartOf="@id/new_game"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/new_game"/>
-
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/guesses"
     android:layout_width="0dp"
     android:layout_height="0dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="@dimen/half_dynamic_spacing"
+    android:layout_marginHorizontal="0dp"
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintBottom_toTopOf="@id/current_guess_container"
+    app:layout_constraintBottom_toTopOf="@id/guess_container"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/new_game"
-    tools:listitem="@layout/item_guess"/>
+    app:layout_constraintTop_toTopOf="parent"/>
 
   <LinearLayout
-    android:id="@+id/current_guess_container"
+    android:id="@+id/guess_container"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
+    android:layout_marginHorizontal="0dp"
+    android:layout_marginVertical="@dimen/half_dynamic_spacing"
+    android:background="?attr/colorPrimaryContainer"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/half_dynamic_spacing"
     app:layout_constraintBottom_toTopOf="@id/palette"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent">
 
-    <!-- TODO: Square slots will be added here or statically -->
-
-    <Button
-      android:id="@+id/submit"
-      android:layout_width="wrap_content"
+    <RadioGroup
+      android:id="@+id/guess_controls"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:enabled="false"
-      android:text="@string/submit"/>
+      android:layout_weight="1"
+      android:layout_margin="0dp"
+      android:padding="@dimen/half_dynamic_spacing"
+      android:orientation="horizontal"/>
+
+    <ImageButton
+      android:id="@+id/submit"
+      android:layout_width="@dimen/control_size"
+      android:layout_height="@dimen/control_size"
+      android:layout_margin="@dimen/half_dynamic_spacing"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:contentDescription="@string/submit_guess"
+      android:scaleType="fitXY"
+      android:src="@drawable/send_button"
+      android:tooltipText="@string/submit_guess"/>
 
   </LinearLayout>
 
@@ -63,17 +61,12 @@
     android:id="@+id/palette"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center"
-    android:padding="@dimen/half_dynamic_spacing"
     android:layout_margin="@dimen/half_dynamic_spacing"
+    android:padding="@dimen/half_dynamic_spacing"
+    android:gravity="center"
+    android:orientation="horizontal"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
-
-
-
-  </LinearLayout>
-
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
