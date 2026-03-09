@@ -76,17 +76,21 @@ public class GuessesAdapter extends RecyclerView.Adapter<ViewHolder> {
       binding.exactMatches.setText(String.format(matchCountFormat, guess.getExactMatches()));
       binding.nearMatches.setText(String.format(matchCountFormat, guess.getNearMatches()));
       binding.symbols.removeAllViews();
+      buildGuessSymbols(guess);
+    }
+
+    private void buildGuessSymbols(Guess guess) {
       guess.getText()
           .codePoints()
-          .forEach((codePoint) -> {
-            ImageView symbolView = (ImageView) inflater.inflate(R.layout.item_guess_symbol,
-                binding.symbols, false);
+          .mapToObj((codePoint) -> {ImageView symbolView = (ImageView) inflater.inflate(R.layout.item_guess_symbol,
+              binding.symbols, false);
             SymbolMap.SymbolAttributes attributes = symbolMap.getAttributes(codePoint);
             symbolView.setImageResource(attributes.getDrawableId());
             symbolView.setColorFilter(attributes.getColor());
             symbolView.setContentDescription(attributes.getName());
-            binding.symbols.addView(symbolView);
-          });
+            return symbolView;
+          })
+          .forEach(binding.symbols::addView);
     }
   }
 }
