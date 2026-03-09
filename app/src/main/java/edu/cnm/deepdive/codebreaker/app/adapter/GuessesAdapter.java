@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
@@ -74,7 +75,18 @@ public class GuessesAdapter extends RecyclerView.Adapter<ViewHolder> {
       binding.number.setText(String.format(guessNumberFormat, position + 1));
       binding.exactMatches.setText(String.format(matchCountFormat, guess.getExactMatches()));
       binding.nearMatches.setText(String.format(matchCountFormat, guess.getNearMatches()));
-      // TODO: 3/9/2026 Populate the binding.symbols LinearLayout with the appropriate symbols.
+      binding.symbols.removeAllViews();
+      guess.getText()
+          .codePoints()
+          .forEach((codePoint) -> {
+            ImageView symbolView = (ImageView) inflater.inflate(R.layout.item_guess_symbol,
+                binding.symbols, false);
+            SymbolMap.SymbolAttributes attributes = symbolMap.getAttributes(codePoint);
+            symbolView.setImageResource(attributes.getDrawableId());
+            symbolView.setColorFilter(attributes.getColor());
+            symbolView.setContentDescription(attributes.getName());
+            binding.symbols.addView(symbolView);
+          });
     }
   }
 }
