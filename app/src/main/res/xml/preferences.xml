@@ -18,7 +18,7 @@
     android:summary="@string/code_pool_pref_summary"
     android:entries="@array/symbol_names"
     android:entryValues="@array/symbols"
-    android:defaultValue="@array/symbols"
+    android:defaultValue="@array/symbols"/>
 
 
 </PreferenceScreen>

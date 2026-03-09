@@ -15,9 +15,13 @@ import android.widget.RadioButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.codebreaker.api.model.Game;
 import edu.cnm.deepdive.codebreaker.api.model.Guess;
@@ -30,9 +34,12 @@ import edu.cnm.deepdive.codebreaker.app.viewmodel.GameViewModel;
 import jakarta.inject.Inject;
 import java.util.List;
 import java.util.stream.IntStream;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 @AndroidEntryPoint
-public class GameFragment extends Fragment {
+public class GameFragment extends Fragment implements MenuProvider {
 
   private static final String TAG = GameFragment.class.getSimpleName();
 
@@ -49,23 +56,42 @@ public class GameFragment extends Fragment {
       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     binding = FragmentGameBinding.inflate(inflater, container, false);
     binding.guesses.setAdapter(guessesAdapter);
-    binding.submit.setOnClickListener((v) -> {
-      submitGuess();
-    });
-
+    binding.submit.setOnClickListener((v) -> submitGuess());
     return binding.getRoot();
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    gameViewModel = new ViewModelProvider(requireActivity()).get(GameViewModel.class);
+    FragmentActivity activity = requireActivity();
+    gameViewModel = new ViewModelProvider(activity).get(GameViewModel.class);
     LifecycleOwner lifecycleOwner = getViewLifecycleOwner();
     gameViewModel.getGame().observe(lifecycleOwner, this::handleGame);
     gameViewModel.getSolved().observe(lifecycleOwner, this::handleSolved);
     gameViewModel.getGuess().observe(lifecycleOwner, this::handleGuess);
     gameViewModel.getError().observe(lifecycleOwner, this::handleError);
-    gameViewModel.startGame("ROYGBIV", 4);
+    gameViewModel.startGame();
+    activity.addMenuProvider(this, lifecycleOwner, Lifecycle.State.RESUMED);
+  }
+
+  @Override
+  public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+    menuInflater.inflate(R.menu.game_options, menu);
+  }
+
+  @Override
+  public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+    boolean handled = true;
+    int itemId = menuItem.getItemId();
+    if (itemId == R.id.settings) {
+      Navigation.findNavController(binding.getRoot())
+          .navigate(GameFragmentDirections.navigateToSettings());
+    } else if (itemId == R.id.new_game) {
+      gameViewModel.startGame();
+    } else {
+      handled = false;
+    }
+    return handled;
   }
 
   @Override
