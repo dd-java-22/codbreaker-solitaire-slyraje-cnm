@@ -14,4 +14,7 @@
   <string name="code_pool_pref_summary">Selected items will be used as the pool of symbols available for code generation and guesses.</string>
   <string name="settings_fragment_label">Codebreaker Settings</string>
 
+  <string name="new_game_menu_item">New game</string>
+  <string name="settings_menu_item">Settings</string>
+
 </resources>
