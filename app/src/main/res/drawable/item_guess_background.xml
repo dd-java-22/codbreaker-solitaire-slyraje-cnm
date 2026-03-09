@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="@dimen/base_drawable_size"
+  android:height="@dimen/base_drawable_size"
+  android:viewportWidth="24"
+  android:viewportHeight="24">
+
+  <item
+    android:top="-2dp"
+    android:start="-2dp"
+    android:end="-2dp">
+
+    <shape
+      android:shape="rectangle">
+
+      <stroke
+        android:width="@dimen/guess_separator_width"
+        android:color="?attr/colorOutline"/>
+
+      <solid
+        android:color="@android:color/transparent"/>
+    </shape>
+
+  </item>
+
+</layer-list>
