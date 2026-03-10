@@ -35,6 +35,11 @@ public class GameSummaryRepositoryImpl implements GameSummaryRepository {
   }
 
   @Override
+  public CompletableFuture<GameSummary> getByExternalKey(String externalKey) {
+    return CompletableFuture.supplyAsync(() -> dao.selectByExternalKey(externalKey));
+  }
+
+  @Override
   public CompletableFuture<Integer> remove(GameSummary summary) {
 
     return CompletableFuture.supplyAsync(() -> dao.delete(summary));

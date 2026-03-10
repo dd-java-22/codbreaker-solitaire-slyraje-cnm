@@ -55,9 +55,4 @@ public interface GameService {
    */
   CompletableFuture<Guess> getGuess(String gameId, String guessId);
 
-  /**
-   * Terminates the service and stops any background processing.
-   */
-  void shutdown();
-
 }
