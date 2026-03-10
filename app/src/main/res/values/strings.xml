@@ -16,5 +16,6 @@
 
   <string name="new_game_menu_item">New game</string>
   <string name="settings_menu_item">Settings</string>
+  <string name="game_fragment_label">@string/app_name</string>
 
 </resources>
