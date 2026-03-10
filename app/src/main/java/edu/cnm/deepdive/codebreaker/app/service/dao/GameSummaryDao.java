@@ -5,9 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.RawQuery;
 import androidx.room.Update;
-import androidx.room.Upsert;
 import edu.cnm.deepdive.codebreaker.app.model.GameSummary;
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +23,11 @@ public interface GameSummaryDao {
       WHERE NOT solved
       ORDER BY IFNULL(last_played, started) DESC
       """;
+  String GAME_KEY_QUERY = """
+      SELECT * FROM game_summary
+      WHERE external_key = :externalKey
+      """;
+
 
   @Insert
   long insert(GameSummary gameSummary);
@@ -37,6 +40,9 @@ public interface GameSummaryDao {
 
   @Delete
   int deleteAll(Collection<GameSummary> summaries);
+
+  @Query(GAME_KEY_QUERY)
+  GameSummary selectByExternalKey(String externalKey);
 
   @Query(IN_PROGRESS_QUERY)
   LiveData<List<GameSummary>> selectInProgress();
