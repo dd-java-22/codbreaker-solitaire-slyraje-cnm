@@ -21,7 +21,7 @@ public class InProgressFragment extends Fragment {
   public View onCreateView(
       @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     binding = FragmentInProgressBinding.inflate(inflater, container, false);
-    // TODO: 3/11/2026 Attach adapter to recylcerview. 
+    // TODO: 3/11/2026 Attach adapter to recyclerview. 
     return binding.getRoot();
   }
 
