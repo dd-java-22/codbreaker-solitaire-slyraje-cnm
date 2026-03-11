@@ -23,5 +23,6 @@
   <string name="pool_size">Pool Size</string>
   <string name="code_length">Code Length</string>
   <string name="guess_count">Guess Count</string>
+  <string name="games_in_progress">Games In Progress</string>
 
 </resources>

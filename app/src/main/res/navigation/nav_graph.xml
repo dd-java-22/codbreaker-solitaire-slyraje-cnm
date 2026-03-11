@@ -13,7 +13,16 @@
     <action
       android:id="@+id/navigate_to_settings"
       app:destination="@id/settings_fragment"/>
+    <action
+      android:id="@+id/action_game_fragment_to_in_progress_fragment"
+      app:destination="@id/in_progress_fragment"/>
   </fragment>
+
+  <fragment
+    android:id="@+id/in_progress_fragment"
+    android:name="edu.cnm.deepdive.codebreaker.app.controller.InProgressFragment"
+    android:label="@string/games_in_progress"/>
+
   <fragment
     android:id="@+id/settings_fragment"
     android:name="edu.cnm.deepdive.codebreaker.app.controller.SettingsFragment"
