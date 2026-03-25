@@ -129,6 +129,8 @@ dependencies {
 
     // Room annotation processor, runtime library
     implementation(libs.room.runtime)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
     annotationProcessor(libs.room.compiler)
 
     // Google Sign-in library
