@@ -39,21 +39,11 @@ jobs:
 
       # Setup
 
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Extract Java version
-        id: version_extractor
-        working-directory: ${{ github.workspace }}
-        run: |
-          JAVA_VERSION=$(sed -n -r 's/^ *java *= *\"([^\"]*)\".*$/\1/p' gradle/libs.versions.toml)
-          echo "java_version=${JAVA_VERSION}" >> "$GITHUB_OUTPUT"
-
       - name: Setup Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: ${{ steps.version_extractor.outputs.java_version}}
+          java-version: '21'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
